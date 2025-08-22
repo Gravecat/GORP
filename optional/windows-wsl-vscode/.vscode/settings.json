@@ -1,0 +1,8 @@
+{
+    "editor.rulers": [
+        160
+    ],
+    "cmake.configureArgs": [
+        "-DCROSS_COMPILE_WINDOWS=1"
+    ]
+}
