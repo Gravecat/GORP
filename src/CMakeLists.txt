@@ -124,21 +124,21 @@ endif(TARGET_WINDOWS)
 target_include_directories(gorp PRIVATE
   "${CMAKE_SOURCE_DIR}/src"
 #  "${CMAKE_SOURCE_DIR}/src/3rdparty"
-#  "${CMAKE_SOURCE_DIR}/sfml/include"
+  "${CMAKE_SOURCE_DIR}/src/3rdparty/sfml/include"
   "${CMAKE_CURRENT_BINARY_DIR}"
 )
 
 # Platform-specific library directories.
 if(TARGET_WINDOWS)
-#  target_link_directories(gorp PRIVATE "${CMAKE_SOURCE_DIR}/sfml/build-windows/lib")
+  target_link_directories(gorp PRIVATE "${CMAKE_SOURCE_DIR}/windows/lib")
 endif(TARGET_WINDOWS)
 if(TARGET_LINUX)
-#  target_link_directories(gorp PRIVATE "${CMAKE_SOURCE_DIR}/sfml/build-linux/lib")
+  target_link_directories(gorp PRIVATE "${CMAKE_SOURCE_DIR}/linux/lib")
 endif(TARGET_LINUX)
 
 # Link libraries. Platform-specific stuff should be set in the main platform-specific section near the top.
 target_link_libraries(gorp
-#  ${SFML_LIBRARIES}
+  ${SFML_LIBRARIES}
   ${OS_LIBRARIES}
   ${CMAKE_THREAD_LIBS_INIT}
 #  fantasyname

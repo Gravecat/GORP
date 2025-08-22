@@ -12,6 +12,8 @@
 *:Zone.Identifier
 
 # Binaries created by the build process, or other bits used for temporary testing.
+*.a
+*.dll
 *.exe
 *.lnk
 *.o
@@ -22,3 +24,6 @@ build-*/**
 
 # Visual Studio Code settings, which aren't relevant to the repo.
 .vscode/**
+
+# SFML headers need to be included manually.
+src/3rdparty/sfml/include/**
