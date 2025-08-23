@@ -20,11 +20,14 @@ https://github.com/skeeto/fantasyname
 Random for modern C++ copyright (c) 2017-2023 effolkronium (Illia Polishchuk).
 https://github.com/ilqvya/random
 
+Rapid YAML copyright (c) 2018 Joao Paulo Magalhaes <dev@jpmag.me>
+https://github.com/biojppm/rapidyaml
+
 SFML copyright (c) 2007-2025 Laurent Gomila.
 https://www.sfml-dev.org/
 
 --------------------------------------------------------------------------------
-MIT License (for Random for modern C++):
+MIT License (for Random for modern C++, Rapid YAML):
 --------------------------------------------------------------------------------
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
