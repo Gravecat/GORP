@@ -25,9 +25,11 @@
 #include <mach-o/dyld.h>    // _NSGetExecutablePath()
 #endif
 
+#include <algorithm>
 #include <cstring>
 
 #include "util/file/binpath.hpp"
+#include "util/stringutils.hpp"
 
 namespace gorp {
 
@@ -65,8 +67,12 @@ std::string BinPath::merge_paths(const std::string &pathA, const std::string &pa
 {
     char combined[MAX_PATH];
     PathCombineA(combined, pathA.c_str(), pathB.c_str());
-    std::string mergedPath(combined);
-    return mergedPath;
+    std::string merged_path(combined);
+    if (merged_path.size() && merged_path[0] == '/')    // Special check for Windows WSL, where it may be a Linux path.
+        std::replace(merged_path.begin(), merged_path.end(), '\\', '/');
+    else    // If not, replace any / in the paths with \.
+        std::replace(merged_path.begin(), merged_path.end(), '/', '\\');
+    return merged_path;
 }
 #endif  // GORP_TARGET_WINDOWS
 
