@@ -14,5 +14,8 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <https://www.gnu.org/licenses/gpl-3.0>.
 --------------------------------------------------------------------------------
 
+Fantasy Name Generator by skeeto.
+https://github.com/skeeto/fantasyname
+
 SFML copyright (c) 2007-2025 Laurent Gomila.
 https://www.sfml-dev.org/

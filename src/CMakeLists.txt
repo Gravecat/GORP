@@ -139,7 +139,7 @@ target_link_libraries(gorp
   ${SFML_LIBRARIES}
   ${OS_LIBRARIES}
   ${CMAKE_THREAD_LIBS_INIT}
-#  fantasyname
+  fantasyname
 #  sam
 #  sfxr
 )
@@ -151,7 +151,7 @@ add_custom_command(TARGET gorp POST_BUILD
 )
 
 # Build some third-party code as separate binaries to be linked in.
-#add_subdirectory(3rdparty/fantasyname)
+add_subdirectory(3rdparty/fantasyname)
 #add_subdirectory(3rdparty/rapidyaml)
 #add_subdirectory(3rdparty/SAM)
 #add_subdirectory(3rdparty/sfxr)
