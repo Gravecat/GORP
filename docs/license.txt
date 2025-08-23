@@ -23,6 +23,9 @@ https://github.com/ilqvya/random
 Rapid YAML copyright (c) 2018 Joao Paulo Magalhaes <dev@jpmag.me>
 https://github.com/biojppm/rapidyaml
 
+SAM by Sebastian Macke.
+https://github.com/s-macke/SAM
+
 SFML copyright (c) 2007-2025 Laurent Gomila.
 https://www.sfml-dev.org/
 

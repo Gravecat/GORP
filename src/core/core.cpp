@@ -6,6 +6,7 @@
 
 #include <cstdlib>  // EXIT_SUCCESS, EXIT_FAILURE, std::getenv
 #include <iostream>
+#include <SFML/System.hpp>
 
 #ifdef GORP_TARGET_WINDOWS
 #include <windows.h>
@@ -14,12 +15,15 @@
 #include <csignal>
 #endif
 
+#include "3rdparty/sam/dictionary.hpp"
+#include "3rdparty/sam/sam.hpp"
 #include "cmake/source.hpp"
 #include "core/core.hpp"
 #include "core/guru.hpp"
 #include "util/file/binpath.hpp"
 #include "util/file/fileutils.hpp"
 #include "util/file/yaml.hpp"
+#include "util/stringutils.hpp"
 
 namespace gorp {
 
@@ -53,10 +57,10 @@ std::string Core::datafile(const std::string file)
 // Destroys the singleton Core object and ends execution.
 void Core::destroy_core(int exit_code)
 {
-    //if (exit_code == EXIT_SUCCESS) log("Normal core shutdown requested.");
-    //else if (exit_code == EXIT_FAILURE) log("Emergency core shutdown requested.", Core::CORE_CRITICAL);
-    //else log("Core shutdown with unknown error code: " + std::to_string(exit_code), Core::CORE_ERROR);
-    //sam::cleanup();
+    if (exit_code == EXIT_SUCCESS) log("Normal core shutdown requested.");
+    else if (exit_code == EXIT_FAILURE) log("Emergency core shutdown requested.", Core::CORE_CRITICAL);
+    else log("Core shutdown with unknown error code: " + std::to_string(exit_code), Core::CORE_ERROR);
+    sam::cleanup();
     cleanup();
     std::exit(exit_code);
 }
@@ -131,7 +135,7 @@ void Core::init_core(std::vector<std::string> parameters)
             //terminal_ptr_ = std::make_unique<Terminal>();
             //game_ptr_ = std::make_unique<Game>();
         }
-        //sam::SAMDict::load_strings();
+        sam::SAMDict::load_strings();
     }
     catch(const GuruMeditation &e) { guru_ptr_->halt(e.what(), e.error_a(), e.error_b()); }
     catch(const std::exception& e) { guru_ptr_->halt(e); }
@@ -184,12 +188,10 @@ int main(int argc, char** argv)
     // Check command-line parameters.
     if (parameters.size() && parameters.at(0) == "-say")
     {
-        /*
         parameters.erase(parameters.begin());
         std::string sam_say = stringutils::join_words(parameters);
         sam::sam_say(sam_say);
         sf::sleep(sf::milliseconds((100 * sam_say.size()) + 200));
-        */
         core().destroy_core(EXIT_SUCCESS);
     }
 
