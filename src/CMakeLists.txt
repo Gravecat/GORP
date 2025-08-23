@@ -148,7 +148,7 @@ target_link_libraries(gorp
   fantasyname
   rapidyaml
   sam
-#  sfxr
+  sfxr
 )
 
 # Post-build, make a 'bin' folder and copy the binary file in there.
@@ -161,4 +161,4 @@ add_custom_command(TARGET gorp POST_BUILD
 add_subdirectory(3rdparty/fantasyname)
 add_subdirectory(3rdparty/rapidyaml)
 add_subdirectory(3rdparty/sam)
-#add_subdirectory(3rdparty/sfxr)
+add_subdirectory(3rdparty/sfxr)
