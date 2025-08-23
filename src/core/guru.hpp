@@ -1,8 +1,8 @@
+// core/guru.hpp -- Guru Meditation error-handling and reporting system.
+
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-// core/guru.hpp -- Guru Meditation error-handling and reporting system.
 
 #pragma once
 

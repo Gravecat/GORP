@@ -1,8 +1,8 @@
+// core/global/guru-exception.hpp -- A custom type of std::exception which can be caught and handled by Guru Meditation, providing extra information.
+
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-// core/global/guru-exception.hpp -- A custom type of std::exception which can be caught and handled by Guru Meditation, providing extra information.
 
 #pragma once
 

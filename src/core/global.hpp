@@ -1,9 +1,9 @@
+// core/global.hpp -- Core definitions that are used very frequently in GORP, enough that they warrant being put in a shared header together.
+// This header also includes some very frequently-used system headers, to avoid having to include them everywhere by hand.
+
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-// core/global.hpp -- Core definitions that are used very frequently in GORP, enough that they warrant being put in a shared header together.
-// This header also includes some very frequently-used system headers, to avoid having to include them everywhere by hand.
 
 #pragma once
 

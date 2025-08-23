@@ -1,8 +1,8 @@
+// core/global/enums.hpp -- Enums which are used frequently enough in the code to belong in a gloabl header.
+
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-// core/global/enums.hpp -- Enums which are used frequently enough in the code to belong in a gloabl header.
 
 #pragma once
 

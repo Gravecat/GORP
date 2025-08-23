@@ -1,8 +1,8 @@
+// cmake/resource.rc.in -- Adds the application icon and metadata to Windows builds.
+
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-// cmake/resource.rc.in -- Adds the application icon and metadata to Windows builds.
 
 #include <windows.h>
 

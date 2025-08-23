@@ -1,8 +1,8 @@
+// util/file/fileutils.hpp -- Various utility functions that deal with creating, deleting, and manipulating files in a platform-agnostic way.
+
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-// util/file/fileutils.hpp -- Various utility functions that deal with creating, deleting, and manipulating files in a platform-agnostic way.
 
 #pragma once
 

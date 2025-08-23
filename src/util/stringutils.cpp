@@ -1,8 +1,8 @@
+// util/stringutils.hpp -- Various utility functions that deal with string manipulation/conversion.
+
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-// util/stringutils.hpp -- Various utility functions that deal with string manipulation/conversion.
 
 #include <algorithm>    // std::transform, std::remove
 #include <numeric>      // std::accumulate

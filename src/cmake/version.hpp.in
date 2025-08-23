@@ -1,8 +1,8 @@
+// cmake/version.hpp.in -- Processed by CMake to create a version string for the game, along with a timestamp of when it was built.
+
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-// cmake/version.hpp.in -- Processed by CMake to create a version string for the game, along with a timestamp of when it was built.
 
 #pragma once
 

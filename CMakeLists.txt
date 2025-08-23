@@ -1,12 +1,10 @@
+# CMakeLists.txt -- CMake build file for GORP, intended for use with GCC.
+# For Linux builds, make a build folder and just `cmake ..`
+# For Windows builds, use the apt package mingw-w64 and cross-compile from Linux or Ubuntu WSL, using `cmake .. -DCROSS_COMPILE_WINDOWS=1`
+
 # SPDX-FileType: SOURCE
 # SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 # SPDX-License-Identifier: GPL-3.0-or-later
-
-# CMakeLists.txt
-# 
-# CMake build file for GORP, intended for use with GCC.
-# For Linux builds, make a build folder and just `cmake ..`
-# For Windows builds, use the apt package mingw-w64 and cross-compile from Linux or Ubuntu WSL, using `cmake .. -DCROSS_COMPILE_WINDOWS=1`
 
 cmake_minimum_required(VERSION 3.13)
 project(gorp)

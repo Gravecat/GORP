@@ -1,8 +1,8 @@
+// util/file/yaml.cpp -- Helper functions to make using RapidYAML easier.
+
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-// util/file/yaml.cpp -- Helper functions to make using RapidYAML easier.
 
 #include "util/file/fileutils.hpp"
 #include "util/file/yaml.hpp"
