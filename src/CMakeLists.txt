@@ -2,9 +2,7 @@
 # SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-# src/CMakeLists.txt
-# 
-# CMake build file for GORP, intended for use with GCC.
+# src/CMakeLists.txt -- CMake build file for GORP, intended for use with GCC.
 # For Linux builds, make a build folder and just `cmake ..`
 # For Windows builds, use the apt package mingw-w64 and cross-compile from Linux or Ubuntu WSL, using `cmake .. -DCROSS_COMPILE_WINDOWS=1`
 # See CMakeLists.txt in the root folder for optional build parameters.
@@ -12,11 +10,11 @@
 cmake_minimum_required(VERSION 3.13)
 
 # Automatically generate version strings used in-game and in the Windows resource file, from this specified game version.
-#set(GORP_VERSION "0.0.0.1")
-#string(REPLACE "." "," GORP_VERSION_COMMA "${GORP_VERSION}")
-#execute_process(COMMAND date "+%y%m%d%H%M" OUTPUT_VARIABLE BUILD_TIMESTAMP OUTPUT_STRIP_TRAILING_WHITESPACE)
-#configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/cmake/version.hpp @ONLY)
-#configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/resource.rc.in ${CMAKE_CURRENT_BINARY_DIR}/cmake/resource.rc @ONLY)
+set(GORP_VERSION "0.0.0.1")
+string(REPLACE "." "," GORP_VERSION_COMMA "${GORP_VERSION}")
+execute_process(COMMAND date "+%y%m%d%H%M" OUTPUT_VARIABLE BUILD_TIMESTAMP OUTPUT_STRIP_TRAILING_WHITESPACE)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/cmake/version.hpp @ONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/resource.rc.in ${CMAKE_CURRENT_BINARY_DIR}/cmake/resource.rc @ONLY)
 
 # Non-platform-specific stuff.
 set(CMAKE_CXX_STANDARD 17)
@@ -83,9 +81,9 @@ if(TARGET_WINDOWS)
   endif()
 
   # Windows resource file, includes application icon.
-#  enable_language(RC)
-#  set(CMAKE_RC_COMPILE_OBJECT "<CMAKE_RC_COMPILER> <FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
-#  set(GORP_RC "${CMAKE_CURRENT_BINARY_DIR}/cmake/resource.rc")
+  enable_language(RC)
+  set(CMAKE_RC_COMPILE_OBJECT "<CMAKE_RC_COMPILER> <FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
+  set(GORP_RC "${CMAKE_CURRENT_BINARY_DIR}/cmake/resource.rc")
 endif(TARGET_WINDOWS)
 
 # Linux-specific settings.
