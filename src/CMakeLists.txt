@@ -1,11 +1,11 @@
-# SPDX-FileType: SOURCE
-# SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
-# SPDX-License-Identifier: GPL-3.0-or-later
-
 # src/CMakeLists.txt -- CMake build file for GORP, intended for use with GCC.
 # For Linux builds, make a build folder and just `cmake ..`
 # For Windows builds, use the apt package mingw-w64 and cross-compile from Linux or Ubuntu WSL, using `cmake .. -DCROSS_COMPILE_WINDOWS=1`
 # See CMakeLists.txt in the root folder for optional build parameters.
+
+# SPDX-FileType: SOURCE
+# SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 cmake_minimum_required(VERSION 3.13)
 
@@ -15,6 +15,7 @@ string(REPLACE "." "," GORP_VERSION_COMMA "${GORP_VERSION}")
 execute_process(COMMAND date "+%y%m%d%H%M" OUTPUT_VARIABLE BUILD_TIMESTAMP OUTPUT_STRIP_TRAILING_WHITESPACE)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/cmake/version.hpp @ONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/resource.rc.in ${CMAKE_CURRENT_BINARY_DIR}/cmake/resource.rc @ONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/source.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/cmake/source.hpp @ONLY)
 
 # Non-platform-specific stuff.
 set(CMAKE_CXX_STANDARD 17)
