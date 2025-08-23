@@ -15,18 +15,19 @@
 #endif
 
 #include "core/core.hpp"
+#include "core/guru.hpp"
 
 namespace gorp {
 
 // Constructor, sets up the Core object.
-Core::Core() { }
+Core::Core() : guru_ptr_(nullptr) { }
 
 // Cleans up all Core-managed objects.
 void Core::cleanup()
 {
     //game_ptr_.reset(nullptr);
     //terminal_ptr_.reset(nullptr);
-    //guru_ptr_.reset(nullptr);
+    guru_ptr_.reset(nullptr);
     //prefs_ptr_.reset(nullptr);
     //datafile_ptr_.reset(nullptr);
 }
@@ -63,10 +64,20 @@ void Core::great_googly_moogly_its_all_gone_to_shit()
 #endif  // GORP_TARGET_WINDOWS
 }
 
+// Returns a reference to the Guru Meditation error-handling/logging object.
+Guru& Core::guru() const
+{
+    if (!guru_ptr_) throw std::runtime_error("Attempt to access null Guru pointer!");
+    return *guru_ptr_;
+}
+
+// Checks if the Guru Meditation object currently exists.
+bool Core::guru_exists() const { return (guru_ptr_ != nullptr); }
+
 // Sets up the core game classes and data, and the terminal subsystem.
 void Core::init_core(std::vector<std::string> parameters)
 {
-    //guru_ptr_ = std::make_unique<Guru>();
+    guru_ptr_ = std::make_unique<Guru>();
     try
     {
         bool headless = false;
@@ -84,9 +95,33 @@ void Core::init_core(std::vector<std::string> parameters)
         }
         //sam::SAMDict::load_strings();
     }
-    //catch(const GuruMeditation &e) { guru_ptr_->halt(e.what(), e.error_a(), e.error_b()); }
-    //catch(const std::exception& e) { guru_ptr_->halt(e); })
-    catch(const std::exception& e) { exit(1); }
+    catch(const GuruMeditation &e) { guru_ptr_->halt(e.what(), e.error_a(), e.error_b()); }
+    catch(const std::exception& e) { guru_ptr_->halt(e); }
+}
+
+// Logs a message in the system log, or prints it to std::cout.
+void Core::log(const std::string &str, int type)
+{
+    if (guru_ptr_) guru_ptr_->log(str, type);
+    else
+    {
+        std::string txt_tag;
+        switch(type)
+        {
+            case CORE_INFO: break;
+            case CORE_WARN: txt_tag = "[WARN] "; break;
+            case CORE_ERROR: txt_tag = "[ERROR] "; break;
+            case CORE_CRITICAL: txt_tag = "[CRITICAL] "; break;
+        }
+        std::cout << txt_tag << str << std::endl;
+    }
+}
+
+// Reports a non-fatal error, which will be logged but won't halt execution unless it cascades.
+void Core::nonfatal(std::string error, int type)
+{
+    if (guru_ptr_) guru_ptr_->nonfatal(error, type);
+    else this->log(error, type);
 }
 
 // A shortcut to using Core::core().

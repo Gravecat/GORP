@@ -11,7 +11,7 @@
 namespace gorp {
 
 //class Game;     // defined in core/game.hpp
-//class Guru;     // defined in core/guru.hpp
+class Guru;     // defined in core/guru.hpp
 //class Datafile; // defined in core/datafile.hpp
 //class Prefs;    // defined in misc/prefs.hpp
 //class Terminal; // defined in core/terminal.hpp
@@ -26,10 +26,10 @@ public:
 //    void            close_datafile();           // We're finished reading static data; close the datafile and free up memory.
 //    Datafile&       datafile() const;           // Returns a reference to the Datafile object.
 //    Game&           game() const;               // Returns a reference to the Game manager object.
-//    Guru&           guru() const;               // Returns a reference to the Guru Meditation error-handling/logging object.
-//    bool            guru_exists() const;        // Checks if the Guru Meditation object currently exists.
-//    void            log(const std::string &str, int type = Core::CORE_INFO);    // Logs a message in the system log, or prints it to std::cout.
-//    void            nonfatal(std::string error, int type);  // Reports a non-fatal error, which will be logged but won't halt execution unless it cascades.
+    Guru&           guru() const;               // Returns a reference to the Guru Meditation error-handling/logging object.
+    bool            guru_exists() const;        // Checks if the Guru Meditation object currently exists.
+    void            log(const std::string &str, int type = Core::CORE_INFO);    // Logs a message in the system log, or prints it to std::cout.
+    void            nonfatal(std::string error, int type);  // Reports a non-fatal error, which will be logged but won't halt execution unless it cascades.
 //    Prefs&          prefs() const;              // Returns a reference to the Prefs object.
 //    Terminal&       terminal() const;           // Returns a reference to the Terminal handler object.
 
@@ -44,7 +44,7 @@ private:
 
 //    std::unique_ptr<Datafile>   datafile_ptr_;  // The datafile, loading in static data from gorp.k10
 //    std::unique_ptr<Game>       game_ptr_;      // Pointer to the Game manager object, which handles the current game state.
-//    std::unique_ptr<Guru>       guru_ptr_;      // Pointer to the Guru Meditation object, which handles errors and logging.
+    std::unique_ptr<Guru>       guru_ptr_;      // Pointer to the Guru Meditation object, which handles errors and logging.
 //    std::unique_ptr<Prefs>      prefs_ptr_;     // Pointer to the Prefs object, which records simple user preferences.
 //    std::unique_ptr<Terminal>   terminal_ptr_;  // Pointer to the Terminal object, which handles rendering on a real or virtual terminal window.
 };
