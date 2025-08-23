@@ -1,8 +1,8 @@
+// core/core.hpp -- Main program entry, initialization and cleanup routines, along with pointers to the key subsystems of the game.
+
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-// core/core.hpp -- Main program entry, initialization and cleanup routines, along with pointers to the key subsystems of the game.
 
 #pragma once
 
@@ -12,7 +12,6 @@ namespace gorp {
 
 //class Game;     // defined in core/game.hpp
 class Guru;     // defined in core/guru.hpp
-//class Datafile; // defined in core/datafile.hpp
 //class Prefs;    // defined in misc/prefs.hpp
 //class Terminal; // defined in core/terminal.hpp
 
@@ -23,8 +22,7 @@ public:
     static constexpr int    CORE_ERROR =    2;  // Serious errors. Shit is going down.
     static constexpr int    CORE_CRITICAL = 3;  // Critical system failure.
 
-//    void            close_datafile();           // We're finished reading static data; close the datafile and free up memory.
-//    Datafile&       datafile() const;           // Returns a reference to the Datafile object.
+    std::string     datafile(const std::string file);   // Returns the full path to a specified game data file.
 //    Game&           game() const;               // Returns a reference to the Game manager object.
     Guru&           guru() const;               // Returns a reference to the Guru Meditation error-handling/logging object.
     bool            guru_exists() const;        // Checks if the Guru Meditation object currently exists.
@@ -38,11 +36,13 @@ public:
     void            destroy_core(int exit_code);    // Destroys the singleton Core object and ends execution.
 
 private:
-            Core();     // Constructor, sets up the Core object.
-    void    cleanup();  // Attempts to gracefully clean up memory and subsystems.
+            Core();             // Constructor, sets up the Core object.
+    void    cleanup();          // Attempts to gracefully clean up memory and subsystems.
+    void    find_gamedata();    // Attempts to locate the gamedata folder.
     void    great_googly_moogly_its_all_gone_to_shit(); // Applies the most powerful possible method to kill the process, in event of emergency.
 
-//    std::unique_ptr<Datafile>   datafile_ptr_;  // The datafile, loading in static data from gorp.k10
+    std::string gamedata_location;  // The path of the game's data files.
+
 //    std::unique_ptr<Game>       game_ptr_;      // Pointer to the Game manager object, which handles the current game state.
     std::unique_ptr<Guru>       guru_ptr_;      // Pointer to the Guru Meditation object, which handles errors and logging.
 //    std::unique_ptr<Prefs>      prefs_ptr_;     // Pointer to the Prefs object, which records simple user preferences.

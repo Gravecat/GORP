@@ -1,8 +1,8 @@
+// core/core.cpp -- Main program entry, initialization and cleanup routines, along with pointers to the key subsystems of the game.
+
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-// core/core.cpp -- Main program entry, initialization and cleanup routines, along with pointers to the key subsystems of the game.
 
 #include <cstdlib>  // EXIT_SUCCESS, EXIT_FAILURE, std::getenv
 #include <iostream>
@@ -14,8 +14,12 @@
 #include <csignal>
 #endif
 
+#include "cmake/source.hpp"
 #include "core/core.hpp"
 #include "core/guru.hpp"
+#include "util/file/binpath.hpp"
+#include "util/file/fileutils.hpp"
+#include "util/file/yaml.hpp"
 
 namespace gorp {
 
@@ -39,6 +43,13 @@ Core& Core::core()
     return the_core;
 }
 
+// Returns the full path to a specified game data file.
+std::string Core::datafile(const std::string file)
+{
+    if (!gamedata_location.size()) throw GuruMeditation("Could not locate valid gamedata folder!");
+    return BinPath::merge_paths(gamedata_location, file);
+}
+
 // Destroys the singleton Core object and ends execution.
 void Core::destroy_core(int exit_code)
 {
@@ -48,6 +59,33 @@ void Core::destroy_core(int exit_code)
     //sam::cleanup();
     cleanup();
     std::exit(exit_code);
+}
+
+// Attempts to locate the gamedata folder.
+void Core::find_gamedata()
+{
+    const std::string game_path_data = BinPath::game_path("gamedata");
+    const std::string game_path_data_gorp_yml = BinPath::merge_paths(game_path_data, "gorp.yml");
+    const std::string source_path_data = BinPath::merge_paths(source::SOURCE_DIR, "gamedata");
+    const std::string source_path_data_gorp_yml = BinPath::merge_paths(source_path_data, "gorp.yml");
+    
+    if (fileutils::file_exists(game_path_data_gorp_yml))
+    {
+        log("Game data folder location: " + game_path_data);
+        gamedata_location = game_path_data;
+    }
+    else if (fileutils::file_exists(source_path_data_gorp_yml))
+    {
+        log("Game data folder location: " + source_path_data);
+        gamedata_location = source_path_data;
+    }
+    else throw GuruMeditation("Could not locate valid gamedata folder!");
+
+    YAML yaml_file(datafile("gorp.yml"));
+    if (!yaml_file.is_map() || !yaml_file.key_exists("gorp_gamedata_version")) throw GuruMeditation("gorp.yml: Invalid file format!");
+    constexpr int expected_version = 1;
+    const int data_version = std::stoi(yaml_file.val("gorp_gamedata_version"));
+    if (data_version != expected_version) guru_ptr_->halt("Unexpected gamedata version!", expected_version, data_version);
 }
 
 // Used internally only to apply the most powerful possible method to kill the process, in event of emergency.
@@ -86,7 +124,7 @@ void Core::init_core(std::vector<std::string> parameters)
             if (param == "-say") headless = true;
         }
 
-        //datafile_ptr_ = std::make_unique<Datafile>();
+        find_gamedata();
         if (!headless)
         {
             //prefs_ptr_ = std::make_unique<Prefs>();
