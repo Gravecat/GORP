@@ -109,6 +109,7 @@ endif(TARGET_LINUX)
 # Source files.
 set(GORP_CPPS
   main.cpp
+  util/file/fileutils.cpp
   util/stringutils.cpp
 )
 
