@@ -112,7 +112,9 @@ set(GORP_CPPS
   core/core.cpp
   core/guru.cpp
   util/file/binpath.cpp
+  util/file/filereader.cpp
   util/file/fileutils.cpp
+  util/file/filewriter.cpp
   util/file/yaml.cpp
   util/stringutils.cpp
 )
