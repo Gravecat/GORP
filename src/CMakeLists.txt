@@ -109,6 +109,7 @@ endif(TARGET_LINUX)
 # Source files.
 set(GORP_CPPS
   main.cpp
+  util/stringutils.cpp
 )
 
 # Binary file. GORP_RC should be blank for non-Windows builds.
