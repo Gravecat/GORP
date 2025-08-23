@@ -20,6 +20,7 @@
 #include "cmake/source.hpp"
 #include "core/core.hpp"
 #include "core/guru.hpp"
+#include "core/prefs.hpp"
 #include "util/file/binpath.hpp"
 #include "util/file/fileutils.hpp"
 #include "util/file/yaml.hpp"
@@ -28,7 +29,7 @@
 namespace gorp {
 
 // Constructor, sets up the Core object.
-Core::Core() : guru_ptr_(nullptr) { }
+Core::Core() : guru_ptr_(nullptr), prefs_ptr_(nullptr) { }
 
 // Cleans up all Core-managed objects.
 void Core::cleanup()
@@ -36,7 +37,7 @@ void Core::cleanup()
     //game_ptr_.reset(nullptr);
     //terminal_ptr_.reset(nullptr);
     guru_ptr_.reset(nullptr);
-    //prefs_ptr_.reset(nullptr);
+    prefs_ptr_.reset(nullptr);
     //datafile_ptr_.reset(nullptr);
 }
 
@@ -131,7 +132,7 @@ void Core::init_core(std::vector<std::string> parameters)
         find_gamedata();
         if (!headless)
         {
-            //prefs_ptr_ = std::make_unique<Prefs>();
+            prefs_ptr_ = std::make_unique<Prefs>();
             //terminal_ptr_ = std::make_unique<Terminal>();
             //game_ptr_ = std::make_unique<Game>();
         }
@@ -164,6 +165,13 @@ void Core::nonfatal(std::string error, int type)
 {
     if (guru_ptr_) guru_ptr_->nonfatal(error, type);
     else this->log(error, type);
+}
+
+// Returns a reference to the Prefs object.
+Prefs& Core::prefs() const
+{
+    if (!prefs_ptr_) throw std::runtime_error("Attempt to access null Prefs pointer!");
+    return *prefs_ptr_;
 }
 
 // A shortcut to using Core::core().

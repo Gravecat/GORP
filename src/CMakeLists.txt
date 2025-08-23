@@ -111,6 +111,7 @@ endif(TARGET_LINUX)
 set(GORP_CPPS
   core/core.cpp
   core/guru.cpp
+  core/prefs.cpp
   util/file/binpath.cpp
   util/file/filereader.cpp
   util/file/fileutils.cpp
