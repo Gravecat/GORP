@@ -110,6 +110,7 @@ endif(TARGET_LINUX)
 set(GORP_CPPS
   main.cpp
   util/file/fileutils.cpp
+  util/file/yaml.cpp
   util/stringutils.cpp
 )
 
