@@ -1,9 +1,9 @@
+// util/file/binpath.cpp -- Some very nasty platform-specific code for determining the path of the binary file at runtime.
+// Based on and modified from code I found on StackOverflow: https://stackoverflow.com/questions/1528298/get-path-of-executable
+
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-// util/file/binpath.cpp -- Some very nasty platform-specific code for determining the path of the binary file at runtime.
-// Based on and modified from code I found on StackOverflow: https://stackoverflow.com/questions/1528298/get-path-of-executable
 
 #ifdef GORP_TARGET_WINDOWS
 #include <windows.h>
