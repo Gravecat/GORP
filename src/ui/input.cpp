@@ -25,7 +25,8 @@ bool Input::process_input(int key)
     if (key == '{' || key == '}') alphanumeric = false;
     if (alphanumeric)
     {
-        input_ += static_cast<char>(key);
+        if (input_.size() >= MAX_INPUT_LENGTH) sfxr().play_sound("fail");
+        else input_ += static_cast<char>(key);
         return true;
     }
     else switch(key)
@@ -67,7 +68,7 @@ void Input::render()
     std::string output = input_.substr(input_begin);
     window_->print(output, Vector2(1, 1), Colour::GREEN);
 
-    if (cursor_blink_) window_->put(Glyph::FULL_BLOCK, Vector2(cursor_pos, 1), Colour::GREEN_DARK);
+    if (cursor_blink_) window_->put(Glyph::FULL_BLOCK, Vector2(cursor_pos, 1), Colour::GREEN);
     int cursor_blink_time = (cursor_blink_ ? 1000 : 500);
     if (blink_timer_.getElapsedTime().asMilliseconds() > cursor_blink_time)
     {

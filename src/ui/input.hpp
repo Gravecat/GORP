@@ -21,6 +21,8 @@ public:
     void    render() override;          // Renders the input window.
 
 private:
+    static constexpr int    MAX_INPUT_LENGTH =  255;    // The maximum length of input that the player can type.
+
     sf::Clock   blink_timer_;   // The timer for the cursor-blink.
     bool        cursor_blink_;  // Is the cursor-blink currently on?
     std::string input_;         // The current input from the player, as it's typed.
