@@ -94,7 +94,7 @@ Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), degaus
         shader_.setUniform(key.c_str(), std::stof(yaml_file.val(key)));
     shader_.setUniform("tex", current_frame_->getTexture());
     shader_.setUniform("textureSize", sf::Vector2f(current_frame_->getSize()));
-    shader_.setUniform("crtGeometry", prefs().shader_geom());
+    shader_.setUniform("crtGeometry", shader_geom());
 
     core().log("SFML initialized successfully.");
     load_sprites();
@@ -154,7 +154,7 @@ void Terminal::flip()
     current_frame_->display();
 
     // Blend the previous frame with reduced opacity
-    if (prefs().shader())
+    if (prefs().shader_mode())
     {
         sf::Sprite previous_sprite(previous_frame_->getTexture());
         previous_sprite.setColor(sf::Color(255, 255, 255, 200));    // Adjust alpha for ghosting.
@@ -177,7 +177,7 @@ void Terminal::flip()
     states.shader = &shader_;
     sf::Sprite sprite(current_frame_->getTexture());
     main_window_.clear(sf::Color(4, 4, 4));
-    if (prefs().shader()) main_window_.draw(sprite, states);
+    if (prefs().shader_mode()) main_window_.draw(sprite, states);
     else main_window_.draw(sprite);
     main_window_.display();
 }
@@ -232,16 +232,9 @@ int Terminal::get_key()
         {
             switch (key_pressed->scancode)
             {
-                case sf::Keyboard::Scancode::F1: pref.set_shader(!pref.shader()); return Key::RESIZE;
-                case sf::Keyboard::Scancode::F2:
-                    if (pref.shader())
-                    {
-                        const bool new_geom = !pref.shader_geom();
-                        pref.set_shader_geom(new_geom);
-                        shader_.setUniform("crtGeometry", new_geom);
-                        return Key::RESIZE;
-                    }
-                    else return Key::F2;
+                case sf::Keyboard::Scancode::F1: set_shader_mode(1); return Key::RESIZE;
+                case sf::Keyboard::Scancode::F2: set_shader_mode(2); return Key::RESIZE;
+                case sf::Keyboard::Scancode::F3: set_shader_mode(0); return Key::RESIZE;
                 case sf::Keyboard::Scancode::Backspace: return Key::BACKSPACE;
                 case sf::Keyboard::Scancode::Tab: return Key::TAB;
                 case sf::Keyboard::Scancode::Enter: return Key::ENTER;
@@ -255,7 +248,6 @@ int Terminal::get_key()
                 case sf::Keyboard::Scancode::End: return Key::END;
                 case sf::Keyboard::Scancode::PageUp: return Key::PAGE_UP;
                 case sf::Keyboard::Scancode::PageDown: return Key::PAGE_DOWN;
-                case sf::Keyboard::Scancode::F3: return Key::F3;
                 case sf::Keyboard::Scancode::F4: return Key::F4;
                 case sf::Keyboard::Scancode::F5: return Key::F5;
                 case sf::Keyboard::Scancode::F6: return Key::F6;
@@ -449,7 +441,7 @@ void Terminal::put(sf::RenderTexture &tex, int ch, Vector2 pos, Colour colour, F
     if (colour != Colour::NONE)
     {
         sf::Color sf_col = ColourMap::colour_to_sf(colour);
-        if (pref.shader()) // Make the colour more vibrant if we're using a shader.
+        if (pref.shader_mode()) // Make the colour more vibrant if we're using a shader.
         {
             sf_col.r = std::min(255, static_cast<int>(sf_col.r * 1.2f));
             sf_col.g = std::min(255, static_cast<int>(sf_col.g * 1.2f));
@@ -504,7 +496,7 @@ void Terminal::remove_window(Window* win)
 Vector2 Terminal::render_offset() const
 {
     Prefs &pref = prefs();
-    if (!pref.shader() || !pref.shader_geom()) return {0, 0};
+    if (!shader_geom()) return {0, 0};
 
     int main_x = main_window_.getSize().x;
     int main_y = main_window_.getSize().y;
@@ -512,6 +504,21 @@ Vector2 Terminal::render_offset() const
     Vector2 result({std::max(1, static_cast<int>(main_x / 1.2f) / (150 * pref.tile_scale())), std::max(1, main_y / (150 * pref.tile_scale()))});
 
     return result;
+}
+
+// Sets a new shader mode (see shader_mode_ in prefs.hpp for the valid modes).
+void Terminal::set_shader_mode(uint8_t mode)
+{
+    prefs().set_shader_mode(mode);
+    shader_.setUniform("crtGeometry", shader_geom());
+}
+
+// Returns true if the current shader mode affects the screen geometry, false if not.
+bool Terminal::shader_geom() const
+{
+    // Currently, only mode 1 affects geometry. We'll keep this function here to make it easier to add more modes in the future, without having to update a
+    // whole bunch of other code at the same time.
+    return (prefs().shader_mode() == 1);
 }
 
 // Determines the size of the screen, in character width and height, taking tiles obscured by the shader into account.

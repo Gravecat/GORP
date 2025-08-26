@@ -47,6 +47,8 @@ private:
     void        load_sprites();     // Load the sprites from the static data.
     void        recreate_frames();  // Recreates the frame textures, after the window has resized.
     Vector2     render_offset() const;  // Applies an offset to rendering, to avoid useless (obscured by the bevel) tiles.
+    void        set_shader_mode(uint8_t mode);  // Sets a new shader mode (see shader_mode_ in prefs.hpp for the valid modes).
+    bool        shader_geom() const;    // Returns true if the current shader mode affects the screen geometry, false if not.
 
     std::unique_ptr<sf::RenderTexture>  current_frame_, previous_frame_; // This is where we render updates to the screen, before applying the shader.
     std::unique_ptr<sf::Sound>  degauss_sound_; // The processed CRT degauss sound effect. Requires the buffer below.
