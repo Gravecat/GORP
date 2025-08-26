@@ -1,4 +1,4 @@
-// misc/namegen.cpp -- Procedural name generation for NPCs.
+// util/text/namegen.cpp -- Procedural name generation for NPCs.
 
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
@@ -6,10 +6,10 @@
 
 #include "3rdparty/fantasyname/namegen.hpp"
 #include "core/core.hpp"
-#include "misc/namegen.hpp"
 #include "util/file/fileutils.hpp"
 #include "util/file/yaml.hpp"
 #include "util/math/random.hpp"
+#include "util/text/namegen.hpp"
 
 namespace gorp {
 

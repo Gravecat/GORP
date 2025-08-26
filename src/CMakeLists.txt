@@ -119,7 +119,6 @@ set(GORP_CPPS
   core/terminal/colour-maps.cpp
   core/terminal/terminal.cpp
   core/terminal/window.cpp
-  misc/namegen.cpp
   ui/element.cpp
   ui/input.cpp
   ui/messagelog.cpp
@@ -131,6 +130,7 @@ set(GORP_CPPS
   util/file/yaml.cpp
   util/system/process.cpp
   util/system/winver.cpp
+  util/text/namegen.cpp
   util/text/stringutils.cpp
   world/codex.cpp
 )
