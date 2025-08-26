@@ -38,6 +38,8 @@ uniform float scanlineDriftSpeed;
 uniform float scanlineIntensity;
 uniform float vignetteIntensity;
 
+uniform bool crtGeometry;
+
 out vec4 fragColor;
 
 precision highp float;
@@ -67,6 +69,8 @@ vec2 getDistortedUV(vec2 uv) {
 }
 
 vec2 curveRemapUV(vec2 uv) {
+    if (!crtGeometry) return uv;
+
     uv = uv * 2.0 - 1.0;
     vec2 offset = abs(uv.yx) / vec2(curvature);
     uv = uv + uv * offset * offset;

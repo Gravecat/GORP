@@ -14,7 +14,7 @@ namespace gorp {
 
 class Prefs : public FileReader, public FileWriter {
 public:
-    static constexpr uint32_t   PREFS_VERSION = 2;  // The version changes when data files are no longer compatible.
+    static constexpr uint32_t   PREFS_VERSION = 3;  // The version changes when data files are no longer compatible.
 
             Prefs();                        // Constructor, sets default values.
     bool    ascii() const;                  // Checks if we're using ASCII glyphs.
@@ -23,13 +23,16 @@ public:
     void    save_prefs();                   // Saves the prefs file to disk.
     void    set_auto_rescale(bool toggle);  // Sets whether or not the tile scale auto-changes on window resize.
     void    set_shader(bool toggle);        // Sets whether or not we're using the GLSL shader.
+    void    set_shader_geom(bool toggle);   // Sets whether or not the shader is using geometry deforming.
     void    set_tile_scale(int scale);      // Sets a new tile scale.
     bool    shader() const;                 // Checks if we're using the GLSL shader.
+    bool    shader_geom() const;            // Checks if the shader is using geometry deforming or not.
     int     tile_scale() const;             // Retrieves the tile scaling factor.
 
 private:
     bool    auto_rescale_;  // Are we auto-rescaling as the window size changes?
     bool    shader_;        // Are we using the GLSL shader?
+    bool    shader_geom_;   // Does the shader apply curved CRT geometry?
     int     tile_scale_;    // The size that tiles are scaled on the screen.
 };
 

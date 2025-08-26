@@ -94,6 +94,7 @@ Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), degaus
         shader_.setUniform(key.c_str(), std::stof(yaml_file.val(key)));
     shader_.setUniform("tex", current_frame_->getTexture());
     shader_.setUniform("textureSize", sf::Vector2f(current_frame_->getSize()));
+    shader_.setUniform("crtGeometry", prefs().shader_geom());
 
     core().log("SFML initialized successfully.");
     load_sprites();
@@ -232,6 +233,15 @@ int Terminal::get_key()
             switch (key_pressed->scancode)
             {
                 case sf::Keyboard::Scancode::F1: pref.set_shader(!pref.shader()); return Key::RESIZE;
+                case sf::Keyboard::Scancode::F2:
+                    if (pref.shader())
+                    {
+                        const bool new_geom = !pref.shader_geom();
+                        pref.set_shader_geom(new_geom);
+                        shader_.setUniform("crtGeometry", new_geom);
+                        return Key::RESIZE;
+                    }
+                    else return Key::F2;
                 case sf::Keyboard::Scancode::Backspace: return Key::BACKSPACE;
                 case sf::Keyboard::Scancode::Tab: return Key::TAB;
                 case sf::Keyboard::Scancode::Enter: return Key::ENTER;
@@ -245,7 +255,6 @@ int Terminal::get_key()
                 case sf::Keyboard::Scancode::End: return Key::END;
                 case sf::Keyboard::Scancode::PageUp: return Key::PAGE_UP;
                 case sf::Keyboard::Scancode::PageDown: return Key::PAGE_DOWN;
-                case sf::Keyboard::Scancode::F2: return Key::F2;
                 case sf::Keyboard::Scancode::F3: return Key::F3;
                 case sf::Keyboard::Scancode::F4: return Key::F4;
                 case sf::Keyboard::Scancode::F5: return Key::F5;
