@@ -6,14 +6,16 @@
 
 #include "core/core.hpp"
 #include "core/prefs.hpp"
+#include "util/file/binpath.hpp"
 
 namespace gorp {
 
 // Constructor, sets default values.
-Prefs::Prefs() : FileReader("userdata/prefs.dat", true), FileWriter(), auto_rescale_(true), shader_mode_(1), tile_scale_(2)
+Prefs::Prefs() : FileReader(BinPath::game_path("userdata/prefs.dat"), true), FileWriter(), auto_rescale_(true), shader_mode_(1), tile_scale_(2)
 {
     if (!data_.size())  // No prefs file right now, so go with default values.
     {
+        core().log("prefs.dat file not found, creating new prefs file.");
         save_prefs();
         return;  
     }
@@ -27,7 +29,7 @@ Prefs::Prefs() : FileReader("userdata/prefs.dat", true), FileWriter(), auto_resc
     }
     if (!header_good)
     {
-        core().log("prefs.dat corrupted or invalid.");
+        core().log("prefs.dat corrupted or invalid version, creating new prefs file.");
         clear_data();
         save_prefs();
         return;
@@ -56,7 +58,7 @@ void Prefs::clear_data() { data_.clear(); }
 // Saves the prefs file to disk.
 void Prefs::save_prefs()
 {
-    open_file("userdata/prefs.dat");
+    open_file(BinPath::game_path("userdata/prefs.dat"));
     write_data<char>('K');
     write_data<char>('8');
     write_data<uint32_t>(PREFS_VERSION);
@@ -80,6 +82,7 @@ void Prefs::set_shader_mode(uint8_t mode)
 {
     if (mode > 2) throw GuruMeditation("Invalid shader mode requested", mode, 2);
     shader_mode_ = mode;
+    save_prefs();
 }
 
 // Sets a new tile scale.
