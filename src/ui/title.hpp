@@ -7,10 +7,10 @@
 #pragma once
 
 #include "core/global.hpp"
-#include "SFML/Audio/Music.hpp"
 
 namespace gorp {
 
+class OggMusic; // defined in core/audio/oggmusic.hpp
 class Window;   // defined in core/terminal/window.hpp
 
 class TitleScreen {
@@ -18,7 +18,6 @@ public:
     enum class TitleOption : uint8_t { NEW_GAME, LOAD_GAME, QUIT };
 
                 TitleScreen();  // Initializes the title screen by loading static data.
-                ~TitleScreen(); // Destructor, explicitly frees memory used.
     TitleOption render();       // Renders the title screen, and returns the user's chosen action.
 
 private:
@@ -28,8 +27,7 @@ private:
 
     std::string                 backronym_;             // The randomly-assembled 'backronym' for GORP chosen this time around.
     bool                        blinking_;              // Whether or not the title-screen dragon is blinking.
-    std::vector<char>           music_vec_;             // Where the actual data for the title-screen music is stored in memory.
-    std::unique_ptr<sf::Music>  music_;                 // The title-screen music. Must be declared AFTER music_vec_. See destructor comment in title.cpp.
+    std::unique_ptr<OggMusic>   music_;                 // The title-screen music.
     std::string                 phrase_;                // The randomly-chosen phrase for the title screen.
     Window*                     title_screen_window_;   // The window where we render the title screen.
 };

@@ -12,8 +12,9 @@
 #include <windows.h>
 #endif
 
-#include "3rdparty/sfxr/sfxr.hpp"
 #include "cmake/version.hpp"
+#include "core/audio/oggsound.hpp"
+#include "core/audio/sfxr.hpp"
 #include "core/core.hpp"
 #include "core/guru.hpp"
 #include "core/prefs.hpp"
@@ -32,16 +33,13 @@
 namespace gorp {
 
 // Constructor, sets up default values but does not initialize the faux-terminal.
-Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), degauss_sound_(nullptr), sfxr_(nullptr), sprite_max_(0), window_pixels_({0, 0})
+Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), degauss_sound_(nullptr), sprite_max_(0), window_pixels_({0, 0})
 {
     core().log("Attempting to initialize SFML and create OpenGL context.");
 
     // Load the degauss sound from the game data.
     core().log("Loading CRT degauss sound...");
-    std::vector<char> degauss_data = fileutils::file_to_char_vec(core().datafile("ogg/crt-degauss.ogg"));
-    if (!degauss_sound_buffer_.loadFromMemory(degauss_data.data(), degauss_data.size())) throw std::runtime_error("Could not load audio file: crt-degauss.ogg");
-    degauss_sound_ = std::make_unique<sf::Sound>(degauss_sound_buffer_);
-    degauss_data.clear();
+    degauss_sound_ = std::make_unique<OggSound>("crt-degauss");
 
     // Define the desired OpenGL context settings.
     sf::ContextSettings gl_settings;
@@ -100,8 +98,7 @@ Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), degaus
 
     core().log("SFML initialized successfully.");
     load_sprites();
-    load_sfxr();
-    core().log("Bitmap font and sound effects loaded successfully.");
+    core().log("Bitmap font loaded successfully.");
     core().guru().console_ready(true);
 }
 
@@ -110,7 +107,6 @@ Terminal::~Terminal()
 {
     for (unsigned int i = 0; i < window_stack_.size(); i++)
         window_stack_.at(i).reset(nullptr);
-    sfxr_.reset(nullptr);
     previous_frame_.reset(nullptr);
     current_frame_.reset(nullptr);
     degauss_sound_.reset(nullptr);
@@ -195,7 +191,7 @@ int Terminal::get_key()
 
     auto adjust_tile_scale = [this, &pref](int adj) {
         int new_scale = pref.tile_scale() + adj;
-        if (new_scale < 1 || new_scale > 10) play_sound("fail");
+        if (new_scale < 1 || new_scale > 10) sfxr().play_sound("fail");
         else
         {
             pref.set_tile_scale(new_scale);
@@ -293,56 +289,6 @@ sf::Image Terminal::load_png(const std::string &filename)
     return image;
 }
 
-// Loads the sfxr sound samples.
-void Terminal::load_sfxr()
-{
-    core().log("Loading sfxr sound files...");
-    sfxr_ = std::make_unique<SfxrSoundStream>();
-    const std::string sfxr_dir = core().datafile("sfxr");
-    std::vector<std::string> sfxr_files = fileutils::files_in_dir(sfxr_dir);
-
-    for (unsigned int i = 0; i < sfxr_files.size(); i++)
-    {
-        const std::string filename = sfxr_files.at(i);
-        FileReader fr(core().datafile("sfxr/" + filename));
-
-        const int version = fr.read_data<int>();
-        if (version < 100 || version > 102) throw GuruMeditation(filename + ": Invalid sfxr file version!", version, i);
-
-        SfxrSample samp;
-        samp.wave_type = fr.read_data<int>();
-        if (version == 102) samp.sound_vol = fr.read_data<float>();
-        samp.p_base_freq = fr.read_data<float>();
-        samp.p_freq_limit = fr.read_data<float>();
-        samp.p_freq_ramp = fr.read_data<float>();
-        if (version >= 101) samp.p_freq_dramp = fr.read_data<float>();
-        samp.p_duty = fr.read_data<float>();
-        samp.p_duty_ramp = fr.read_data<float>();
-        samp.p_vib_strength = fr.read_data<float>();
-        samp.p_vib_speed = fr.read_data<float>();
-        samp.p_vib_delay = fr.read_data<float>();
-        samp.p_env_attack = fr.read_data<float>();
-        samp.p_env_sustain = fr.read_data<float>();
-        samp.p_env_decay = fr.read_data<float>();
-        samp.p_env_punch = fr.read_data<float>();
-        samp.filter_on = fr.read_data<bool>();
-        samp.p_lpf_resonance = fr.read_data<float>();
-        samp.p_lpf_freq = fr.read_data<float>();
-        samp.p_lpf_ramp = fr.read_data<float>();
-        samp.p_hpf_freq = fr.read_data<float>();
-        samp.p_hpf_ramp = fr.read_data<float>();
-        samp.p_pha_offset = fr.read_data<float>();
-        samp.p_pha_ramp = fr.read_data<float>();
-        samp.p_repeat_speed = fr.read_data<float>();
-        if (version >= 101)
-        {
-            samp.p_arp_speed = fr.read_data<float>();
-            samp.p_arp_mod = fr.read_data<float>();
-        }
-        sfxr_samples_.insert({filename, samp});
-    }
-}
-
 // Load the sprites from the static data.
 void Terminal::load_sprites()
 {
@@ -361,17 +307,6 @@ void Terminal::load_sprites()
 
     if (!sprite_sheet_.loadFromImage(new_image)) throw std::runtime_error("Failed to load texture: font.png");
     sprite_max_ = (sprite_sheet_.getSize().x / TILE_SIZE) * (sprite_sheet_.getSize().y / TILE_SIZE);
-}
-
-// Plays an sfxr sound effect.
-void Terminal::play_sound(const std::string &sound)
-{
-    const auto result = sfxr_samples_.find(sound + ".sfs");
-    if (result == sfxr_samples_.end()) throw std::runtime_error("Missing sound file: " + sound);
-
-    sfxr_->stop();
-    sfxr_->load_settings(result->second);
-    sfxr_->play_sample();
 }
 
 // Enables or disables the frame-limiting on rendering.
@@ -481,7 +416,7 @@ void Terminal::recreate_frames()
 
     static bool first_degauss = true;
     degauss_sound_->play();
-    if (!first_degauss) degauss_sound_->setPlayingOffset(sf::milliseconds(550));
+    if (!first_degauss) degauss_sound_->set_playing_offset(sf::milliseconds(550));
     first_degauss = false;
 
     for (int i = 0; i < 16; i++)

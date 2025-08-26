@@ -6,6 +6,7 @@
 
 #include <cstdlib>  // EXIT_SUCCESS
 
+#include "core/audio/oggmusic.hpp"
 #include "core/core.hpp"
 #include "core/game.hpp"
 #include "core/terminal/terminal.hpp"

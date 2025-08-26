@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "cmake/version.hpp"
+#include "core/audio/oggmusic.hpp"
 #include "core/core.hpp"
 #include "core/game.hpp"
 #include "core/terminal/terminal.hpp"
@@ -33,20 +34,9 @@ TitleScreen::TitleScreen() : blinking_(false), music_(nullptr), title_screen_win
     phrase_ = phrases.at(random::get<int>(0, phrases.size() - 1));
 
     // Load the title-screen music.
-    music_vec_ = fileutils::file_to_char_vec(core().datafile("ogg/march.ogg"));
-    music_ = std::make_unique<sf::Music>();
-    if (!music_->openFromMemory(music_vec_.data(), music_vec_.size())) throw std::runtime_error("Cannot load audio file: march");
-    music_->setVolume(75.0f);
-    music_->setLooping(true);
-}
-
-// Destructor, explicitly frees memory used.
-TitleScreen::~TitleScreen()
-{
-    // This is kinda redundant now, but I wanna be watertight. Since music_ relies on the data in music_vec_, we have to ensure music_ is destroyed first when
-    // the class is destroyed. This should have been fixed now with rearranging music_ and music_vec_ in title.hpp, but because I like to be double-sure, we're
-    // also explicitly freeing music_ here, before music_vec_ goes anywhere, to make absolutely sure no segfaults can happen.
-    music_.reset(nullptr);
+    music_ = std::make_unique<OggMusic>("march");
+    music_->set_volume(75.0f);
+    music_->set_looping(true);
 }
 
 // Renders the title screen, and returns the user's chosen action.
@@ -61,7 +51,7 @@ TitleScreen::TitleOption TitleScreen::render()
     int result;
     while(true)
     {
-        if (!music_started && audio_timer.getElapsedTime().asMilliseconds() > 1500)
+        if (!music_started && audio_timer.getElapsedTime().asMilliseconds() > 4000)
         {
             music_->play();
             music_started = true;

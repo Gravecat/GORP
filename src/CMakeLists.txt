@@ -109,6 +109,9 @@ endif(TARGET_LINUX)
 
 # Source files.
 set(GORP_CPPS
+  core/audio/oggmusic.cpp
+  core/audio/oggsound.cpp
+  core/audio/sfxr.cpp
   core/core.cpp
   core/game.cpp
   core/guru.cpp
