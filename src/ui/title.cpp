@@ -7,6 +7,7 @@
 #include "cmake/version.hpp"
 #include "core/audio/oggmusic.hpp"
 #include "core/audio/oggsound.hpp"
+#include "core/audio/sfxr.hpp"
 #include "core/core.hpp"
 #include "core/game.hpp"
 #include "core/terminal/terminal.hpp"
@@ -92,6 +93,7 @@ TitleScreen::TitleOption TitleScreen::render()
             case '1':
                 music_->stop();
                 term.remove_window(title_screen_window_);
+                sfxr().play_sound("powerup");
                 return TitleOption::NEW_GAME;
             case '3':
                 music_->stop();
