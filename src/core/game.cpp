@@ -6,6 +6,7 @@
 
 #include <cstdlib>  // EXIT_SUCCESS
 
+#include "core/audio/oggsound.hpp"
 #include "core/audio/oggmusic.hpp"
 #include "core/core.hpp"
 #include "core/game.hpp"
@@ -19,14 +20,13 @@
 
 namespace gorp {
 
-Game::Game() : codex_ptr_(nullptr), title_screen_ptr_(nullptr), ui_element_id_counter_(0), ui_input_(0), ui_msglog_(0) { }
+Game::Game() : codex_ptr_(nullptr), ui_element_id_counter_(0), ui_input_(0), ui_msglog_(0) { }
 
 // Destructor, cleans up attached classes.
 Game::~Game()
 {
     for (unsigned int i = 0; i < ui_elements_.size(); i++)
         ui_elements_.at(i).reset(nullptr);
-    title_screen_ptr_.reset(nullptr);
     codex_ptr_.reset(nullptr);
 }
 
@@ -42,9 +42,9 @@ uint32_t Game::add_element(std::unique_ptr<Element> element)
 void Game::begin()
 {
     codex_ptr_ = std::make_unique<Codex>();
-    title_screen_ptr_ = std::make_unique<TitleScreen>();
+    auto title_screen_ptr = std::make_unique<TitleScreen>();
 
-    const auto result = title_screen_ptr_->render();
+    const auto result = title_screen_ptr->render();
     switch(result)
     {
         case TitleScreen::TitleOption::QUIT:
@@ -55,6 +55,7 @@ void Game::begin()
             new_game();
             break;
     }
+    title_screen_ptr.reset(nullptr);
     main_loop();
 }
 

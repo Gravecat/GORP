@@ -6,6 +6,7 @@
 
 #include "cmake/version.hpp"
 #include "core/audio/oggmusic.hpp"
+#include "core/audio/oggsound.hpp"
 #include "core/core.hpp"
 #include "core/game.hpp"
 #include "core/terminal/terminal.hpp"
@@ -19,7 +20,7 @@
 namespace gorp {
 
 // Simple constructor, sets things up.
-TitleScreen::TitleScreen() : blinking_(false), music_(nullptr), title_screen_window_(nullptr)
+TitleScreen::TitleScreen() : blinking_(false), floppy_played_(false), floppy_sound_(nullptr), music_(nullptr), title_screen_window_(nullptr)
 {
     YAML title_data(core().datafile("misc/title.yml"));
     if (!title_data.is_map()) throw GuruMeditation("misc/title/yml: Invalid file format");
@@ -37,6 +38,16 @@ TitleScreen::TitleScreen() : blinking_(false), music_(nullptr), title_screen_win
     music_ = std::make_unique<OggMusic>("march");
     music_->set_volume(75.0f);
     music_->set_looping(true);
+
+    // Load the floppy-disk loading sound.
+    floppy_sound_ = std::make_unique<OggSound>("floppy-disk");
+}
+
+// Destructor, cleans up used memory.
+TitleScreen::~TitleScreen()
+{
+    music_.reset(nullptr);
+    floppy_sound_.reset(nullptr);
 }
 
 // Renders the title screen, and returns the user's chosen action.
@@ -51,7 +62,12 @@ TitleScreen::TitleOption TitleScreen::render()
     int result;
     while(true)
     {
-        if (!music_started && audio_timer.getElapsedTime().asMilliseconds() > 4000)
+        if (!floppy_played_ && audio_timer.getElapsedTime().asMilliseconds() > 800)
+        {
+            floppy_played_ = true;
+            floppy_sound_->play();
+        }
+        if (!music_started && audio_timer.getElapsedTime().asMilliseconds() > 4200)
         {
             music_->play();
             music_started = true;

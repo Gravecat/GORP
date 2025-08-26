@@ -22,7 +22,11 @@ OggSound::OggSound(const std::string &filename)
 }
 
 // Destructor, cleans up used memory.
-OggSound::~OggSound() { sound_ptr_.reset(nullptr); }
+OggSound::~OggSound()
+{
+    sound_ptr_->stop();
+    sound_ptr_.reset(nullptr);
+}
 
 // Plays the sound effect.
 void OggSound::play() { sound_ptr_->play(); }

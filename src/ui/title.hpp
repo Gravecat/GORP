@@ -10,6 +10,7 @@
 
 namespace gorp {
 
+class OggSound; // defined in core/audio/oggsound.hpp
 class OggMusic; // defined in core/audio/oggmusic.hpp
 class Window;   // defined in core/terminal/window.hpp
 
@@ -18,6 +19,7 @@ public:
     enum class TitleOption : uint8_t { NEW_GAME, LOAD_GAME, QUIT };
 
                 TitleScreen();  // Initializes the title screen by loading static data.
+                ~TitleScreen(); // Destructor, cleans up used memory.
     TitleOption render();       // Renders the title screen, and returns the user's chosen action.
 
 private:
@@ -27,6 +29,8 @@ private:
 
     std::string                 backronym_;             // The randomly-assembled 'backronym' for GORP chosen this time around.
     bool                        blinking_;              // Whether or not the title-screen dragon is blinking.
+    bool                        floppy_played_;         // Has the floppy-disk sound effect played yet?
+    std::unique_ptr<OggSound>   floppy_sound_;          // The floppy-disk loading sound.
     std::unique_ptr<OggMusic>   music_;                 // The title-screen music.
     std::string                 phrase_;                // The randomly-chosen phrase for the title screen.
     Window*                     title_screen_window_;   // The window where we render the title screen.
