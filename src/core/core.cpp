@@ -26,8 +26,8 @@
 #include "util/file/binpath.hpp"
 #include "util/file/fileutils.hpp"
 #include "util/file/yaml.hpp"
-#include "util/stringutils.hpp"
 #include "util/system/process.hpp"
+#include "util/text/stringutils.hpp"
 
 namespace gorp {
 

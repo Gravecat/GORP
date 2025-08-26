@@ -16,7 +16,7 @@
 #include "SFML/System.hpp"
 #include "util/file/binpath.hpp"
 #include "util/file/fileutils.hpp"
-#include "util/stringutils.hpp"
+#include "util/text/stringutils.hpp"
 
 namespace gorp {
 

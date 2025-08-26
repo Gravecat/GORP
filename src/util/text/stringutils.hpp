@@ -1,4 +1,4 @@
-// util/stringutils.hpp -- Various utility functions that deal with string manipulation/conversion.
+// util/text/stringutils.hpp -- Various utility functions that deal with string manipulation/conversion.
 
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>

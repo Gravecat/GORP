@@ -11,7 +11,7 @@
 #include <unistd.h>     // unlink()
 
 #include "util/file/fileutils.hpp"
-#include "util/stringutils.hpp"
+#include "util/text/stringutils.hpp"
 
 namespace gorp {
 namespace fileutils {

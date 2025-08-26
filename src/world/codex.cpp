@@ -8,7 +8,7 @@
 #include "core/game.hpp"
 #include "core/terminal/terminal.hpp"
 #include "misc/namegen.hpp"
-#include "util/stringutils.hpp"
+#include "util/text/stringutils.hpp"
 #include "world/codex.hpp"
 
 namespace gorp {

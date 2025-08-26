@@ -129,9 +129,9 @@ set(GORP_CPPS
   util/file/fileutils.cpp
   util/file/filewriter.cpp
   util/file/yaml.cpp
-  util/stringutils.cpp
   util/system/process.cpp
   util/system/winver.cpp
+  util/text/stringutils.cpp
   world/codex.cpp
 )
 

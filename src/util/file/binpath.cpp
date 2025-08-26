@@ -29,7 +29,7 @@
 #include <cstring>
 
 #include "util/file/binpath.hpp"
-#include "util/stringutils.hpp"
+#include "util/text/stringutils.hpp"
 
 namespace gorp {
 

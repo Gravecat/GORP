@@ -8,7 +8,7 @@
 #include "core/terminal/terminal.hpp"
 #include "core/terminal/window.hpp"
 #include "ui/messagelog.hpp"
-#include "util/stringutils.hpp"
+#include "util/text/stringutils.hpp"
 
 namespace gorp {
 

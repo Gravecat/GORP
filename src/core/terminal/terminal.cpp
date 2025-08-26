@@ -24,8 +24,8 @@
 #include "util/file/filereader.hpp"
 #include "util/file/fileutils.hpp"
 #include "util/file/yaml.hpp"
-#include "util/stringutils.hpp"
 #include "util/system/winver.hpp"
+#include "util/text/stringutils.hpp"
 
 #ifdef GORP_TARGET_LINUX
 #include <X11/Xlib.h>   // Include this *after* SFML or the compiler goes crazy.
