@@ -41,7 +41,7 @@ private:
     void        put(sf::RenderTexture &tex, int ch, Vector2 pos, Colour colour, Font font = Font::NORMAL);
 
     // Other functions that are only used internally by Terminal.
-    void        flip(); // Refreshes the terminal after rendering. This is called automatically before the event loop, for simplicity.
+    void        flip(bool update_screen = true);    // Refreshes the terminal after rendering. This is called automatically before the event loop.
     sf::Image   load_png(const std::string &filename);  // Loads a PNG from the data files.
     void        load_sfxr();        // Loads the sfxr sound samples.
     void        load_sprites();     // Load the sprites from the static data.

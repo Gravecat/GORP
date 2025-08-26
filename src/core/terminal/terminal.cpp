@@ -121,7 +121,7 @@ Window* Terminal::add_window(Vector2 new_size, Vector2 new_pos) {
 }
 
 // Refreshes the terminal after rendering.
-void Terminal::flip()
+void Terminal::flip(bool update_screen)
 {
     // Clear the main render surface.
     current_frame_->clear(sf::Color(2, 2, 2));
@@ -179,7 +179,7 @@ void Terminal::flip()
     main_window_.clear(sf::Color(4, 4, 4));
     if (prefs().shader_mode()) main_window_.draw(sprite, states);
     else main_window_.draw(sprite);
-    main_window_.display();
+    if (update_screen) main_window_.display();
 }
 
 // Gets keyboard input from the user.
@@ -459,6 +459,9 @@ void Terminal::put(sf::RenderTexture &tex, int ch, Vector2 pos, Colour colour, F
 // Recreates the frame textures, after the window has resized.
 void Terminal::recreate_frames()
 {
+    main_window_.clear(sf::Color::Black);
+    main_window_.display();
+
     sf::Vector2u window_size(window_pixels_.x, window_pixels_.y);
 
     current_frame_ = std::make_unique<sf::RenderTexture>(window_size);
@@ -476,6 +479,9 @@ void Terminal::recreate_frames()
     degauss_sound_->play();
     if (!first_degauss) degauss_sound_->setPlayingOffset(sf::milliseconds(550));
     first_degauss = false;
+
+    for (int i = 0; i < 8; i++)
+        flip(false);
 }
 
 // Removes a Window from the stack. This is called automatically from Window's destructor.
