@@ -504,7 +504,7 @@ void Terminal::remove_window(Window* win)
 Vector2 Terminal::render_offset() const
 {
     Prefs &pref = prefs();
-    if (!pref.shader()) return {0, 0};
+    if (!pref.shader() || !pref.shader_geom()) return {0, 0};
 
     int main_x = main_window_.getSize().x;
     int main_y = main_window_.getSize().y;
