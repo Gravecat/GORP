@@ -12,6 +12,7 @@ namespace gorp {
 
 class Codex;        // defined in world/codex.hpp
 class Element;      // defined in ui/element.hpp
+class MessageLog;   // defined in ui/messagelog.hpp
 class TitleScreen;  // defined in ui/title.hpp
 
 class Game {
@@ -24,6 +25,7 @@ public:
     void        delete_element(uint32_t id);    // Deletes a specified UI element.
     Element&    element(uint32_t id) const;     // Retrieves a specified UI element.
     void        leave_game();       // Shuts things down cleanly and exits the game.
+    MessageLog& log() const;        // Returns a reference to the MessageLog object.
     uint32_t    unique_ui_id();     // Returns a new, unique UI element ID.
 
 private:
@@ -35,6 +37,7 @@ private:
     std::unique_ptr<TitleScreen>    title_screen_ptr_;  // Pointer to the title screen object.
     std::vector<std::unique_ptr<Element>>   ui_elements_;       // The UI elements on screen right now.
     uint32_t                        ui_element_id_counter_;     // The counter for generating unique UI element IDs.
+    uint32_t                        ui_msglog_;         // The vector ID of the MessageLog stored in ui_elements_.
 };
 
 Game&   game(); // A shortcut instead of using core().game()

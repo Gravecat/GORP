@@ -11,13 +11,14 @@
 #include "core/game.hpp"
 #include "core/terminal/terminal.hpp"
 #include "ui/element.hpp"
+#include "ui/messagelog.hpp"
 #include "ui/title.hpp"
 #include "util/math/random.hpp"
 #include "world/codex.hpp"
 
 namespace gorp {
 
-Game::Game() : codex_ptr_(nullptr), title_screen_ptr_(nullptr), ui_element_id_counter_(0) { }
+Game::Game() : codex_ptr_(nullptr), title_screen_ptr_(nullptr), ui_element_id_counter_(0), ui_msglog_(0) { }
 
 // Destructor, cleans up attached classes.
 Game::~Game()
@@ -59,6 +60,7 @@ void Game::begin()
 // Clears all UI elements.
 void Game::clear_elements()
 {
+    ui_msglog_ = 0;
     for (unsigned int i = 0; i < ui_elements_.size(); i++)
         ui_elements_.at(i)->destroy_window();
     ui_elements_.clear();
@@ -100,9 +102,22 @@ Element& Game::element(uint32_t id) const
 // Shuts things down cleanly and exits the game.
 void Game::leave_game() { core().destroy_core(EXIT_SUCCESS); }
 
+// Returns a reference to the MessageLog object.
+MessageLog& Game::log() const
+{
+    if (!ui_msglog_) throw std::runtime_error("Attempt to access undefined message log pointer!");
+    MessageLog* msglog = dynamic_cast<MessageLog*>(&element(ui_msglog_));
+    if (!msglog) throw std::runtime_error("UI elements vector corrupted!");
+    return *msglog;
+}
+
 // brøether, may i have the lööps
 void Game::main_loop()
 {
+    ui_msglog_ = add_element(std::make_unique<MessageLog>());
+    gorp::log().message("{G}Welcome, brave adventurer to the perilous realms of {C}GORP{G}!");
+    gorp::log().message("");
+
     int key = 0;
     while(true)
     {
