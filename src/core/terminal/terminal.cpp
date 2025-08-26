@@ -59,6 +59,8 @@ Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), degaus
     if (actual_settings.majorVersion < gl_settings.majorVersion || (actual_settings.majorVersion == gl_settings.majorVersion &&
         actual_settings.minorVersion < gl_settings.minorVersion)) core().nonfatal("OpenGL version older than requested!", Core::CORE_ERROR);
     main_window_.setFramerateLimit(60);
+    main_window_.clear(sf::Color::Black);
+    main_window_.display();
     recreate_frames();
 
     // Get the screen resolution of the primary monitor.
@@ -132,22 +134,25 @@ void Terminal::flip(bool update_screen)
     shader_.setUniform("time", time);
 
     // Render any stacked windows.
-    for (unsigned int i = 0; i < window_stack_.size(); i++)
+    if (update_screen)
     {
-        Window* win = window_stack_.at(i).get();
-        if (!win)   // This shouldn't happen, but it can't hurt to be safe.
+        for (unsigned int i = 0; i < window_stack_.size(); i++)
         {
-            window_stack_.erase(window_stack_.begin() + i);
-            i--;
-            continue;
-        }
-        win->render_texture().display();
+            Window* win = window_stack_.at(i).get();
+            if (!win)   // This shouldn't happen, but it can't hurt to be safe.
+            {
+                window_stack_.erase(window_stack_.begin() + i);
+                i--;
+                continue;
+            }
+            win->render_texture().display();
 
-        sf::Sprite win_sprite(win->render_texture().getTexture());
-        sf::Vector2f render_pos((win->pos().x + render_offset().x) * TILE_SIZE * prefs().tile_scale(),
-            (win->pos().y + render_offset().y) * TILE_SIZE * prefs().tile_scale());
-        win_sprite.setPosition(render_pos);
-        current_frame_->draw(win_sprite);
+            sf::Sprite win_sprite(win->render_texture().getTexture());
+            sf::Vector2f render_pos((win->pos().x + render_offset().x) * TILE_SIZE * prefs().tile_scale(),
+                (win->pos().y + render_offset().y) * TILE_SIZE * prefs().tile_scale());
+            win_sprite.setPosition(render_pos);
+            current_frame_->draw(win_sprite);
+        }
     }
 
     // Finish drawing the current frame.
@@ -460,7 +465,6 @@ void Terminal::put(sf::RenderTexture &tex, int ch, Vector2 pos, Colour colour, F
 void Terminal::recreate_frames()
 {
     main_window_.clear(sf::Color::Black);
-    main_window_.display();
 
     sf::Vector2u window_size(window_pixels_.x, window_pixels_.y);
 
@@ -480,7 +484,7 @@ void Terminal::recreate_frames()
     if (!first_degauss) degauss_sound_->setPlayingOffset(sf::milliseconds(550));
     first_degauss = false;
 
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 16; i++)
         flip(false);
 }
 
