@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <SFML/System.hpp>
 #include "core/global.hpp"
 #include "ui/element.hpp"
 
@@ -19,7 +20,9 @@ public:
     void    render() override;          // Renders the input window.
 
 private:
-    std::string input_; // The current input from the player, as it's typed.
+    sf::Clock   blink_timer_;   // The timer for the cursor-blink.
+    bool        cursor_blink_;  // Is the cursor-blink currently on?
+    std::string input_;         // The current input from the player, as it's typed.
 };
 
 }   // namespace gorp

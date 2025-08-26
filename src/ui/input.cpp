@@ -11,7 +11,11 @@
 namespace gorp {
 
 // Constructor, sets up the input window.
-Input::Input() { recreate_window(); }
+Input::Input() : cursor_blink_(true)
+{
+    always_redraw(true);
+    recreate_window();
+}
 
 // (Re)creates the input windw.
 void Input::recreate_window()
@@ -28,7 +32,26 @@ void Input::render()
     window_->clear();
     window_->box();
     window_->put(Glyph::BOX_LVR, Vector2(0, 0));
-    window_->put(Glyph::BOX_LVL, Vector2(window_->size().x - 1, 0));
+    window_->put(Glyph::BOX_LVL, Vector2(window_->size().x - 1, 0)); 
+
+    const unsigned int max_width = window_->size().x - 3;
+    unsigned int cursor_pos = input_.size() + 1;
+    unsigned int input_begin = 0;
+    if (input_.size() >= max_width)
+    {
+        input_begin = input_.size() - max_width - 1;
+        cursor_pos = window_->size().x - 1;
+    }
+    std::string output = input_.substr(input_begin);
+    window_->print(output, Vector2(1, 1), Colour::GREEN);
+
+    if (cursor_blink_) window_->put(Glyph::FULL_BLOCK, Vector2(cursor_pos, 1), Colour::GREEN_DARK);
+    int cursor_blink_time = (cursor_blink_ ? 1000 : 500);
+    if (blink_timer_.getElapsedTime().asMilliseconds() > cursor_blink_time)
+    {
+        cursor_blink_ = !cursor_blink_;
+        blink_timer_.restart();
+    }
 }
 
 }   // namespace gorp
