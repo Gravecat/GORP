@@ -16,6 +16,7 @@ class Input : public Element
 {
 public:
             Input();    // Constructor, sets up the input window.
+    bool    process_input(int key) override;    // Processes keyboard input from the player.
     void    recreate_window() override; // (Re)creates the input windw.
     void    render() override;          // Renders the input window.
 
