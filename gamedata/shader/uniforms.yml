@@ -8,7 +8,7 @@ bloomIntensity: 0.7         # 0.45
 bloomSpread: 2.0            # 2.0
 chromaticAberration: 0.8    # 0.8
 colorBleedAmount: 0.2       # 0.2
-curvature: 4.0              # 2.0
+curvature: 6.0              # 2.0
 edgeEnd: 1.08               # 1.0
 edgeStart: 0.96             # 0.85
 flickerAmount: 0.03         # 0.03
