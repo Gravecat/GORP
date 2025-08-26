@@ -165,6 +165,13 @@ void Game::new_game()
 {
 }
 
+// Processes input from the player.
+void Game::process_input(const std::string &input)
+{
+    log().message("{G}> " + input);
+    log().message("");
+}
+
 // Returns a new, unique UI element ID.
 uint32_t Game::unique_ui_id() { return ++ui_element_id_counter_; }
 

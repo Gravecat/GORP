@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "core/audio/sfxr.hpp"
+#include "core/game.hpp"
 #include "core/terminal/terminal.hpp"
 #include "core/terminal/window.hpp"
 #include "ui/input.hpp"
@@ -12,7 +13,7 @@
 namespace gorp {
 
 // Constructor, sets up the input window.
-Input::Input() : cursor_blink_(true)
+Input::Input() : cursor_blink_(true), input_("> ")
 {
     always_redraw(true);
     recreate_window();
@@ -32,10 +33,13 @@ bool Input::process_input(int key)
     else switch(key)
     {
         case Key::BACKSPACE:
-            if (input_.size()) input_ = input_.substr(0, input_.size() - 1);
+            if (input_.size() > 2) input_ = input_.substr(0, input_.size() - 1);
             else sfxr().play_sound("fail");
             return true;
-        case Key::ENTER: return true;   // Not processed yet, but will be later.
+        case Key::ENTER:
+            game().process_input(input_.substr(2));
+            input_ = "> ";
+            return true;
         default: return false;
     }
 }

@@ -25,6 +25,7 @@ public:
     Element&    element(uint32_t id) const;     // Retrieves a specified UI element.
     void        leave_game();       // Shuts things down cleanly and exits the game.
     MessageLog& log() const;        // Returns a reference to the MessageLog object.
+    void        process_input(const std::string &input);    // Processes input from the player.
     uint32_t    unique_ui_id();     // Returns a new, unique UI element ID.
 
 private:
