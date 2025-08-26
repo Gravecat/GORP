@@ -118,6 +118,7 @@ set(GORP_CPPS
   core/terminal/window.cpp
   misc/namegen.cpp
   ui/element.cpp
+  ui/input.cpp
   ui/messagelog.cpp
   ui/title.cpp
   util/file/binpath.cpp

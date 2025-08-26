@@ -11,6 +11,7 @@
 #include "core/game.hpp"
 #include "core/terminal/terminal.hpp"
 #include "ui/element.hpp"
+#include "ui/input.hpp"
 #include "ui/messagelog.hpp"
 #include "ui/title.hpp"
 #include "util/math/random.hpp"
@@ -18,7 +19,7 @@
 
 namespace gorp {
 
-Game::Game() : codex_ptr_(nullptr), title_screen_ptr_(nullptr), ui_element_id_counter_(0), ui_msglog_(0) { }
+Game::Game() : codex_ptr_(nullptr), title_screen_ptr_(nullptr), ui_element_id_counter_(0), ui_input_(0), ui_msglog_(0) { }
 
 // Destructor, cleans up attached classes.
 Game::~Game()
@@ -60,7 +61,7 @@ void Game::begin()
 // Clears all UI elements.
 void Game::clear_elements()
 {
-    ui_msglog_ = 0;
+    ui_input_ = ui_msglog_ = 0;
     for (unsigned int i = 0; i < ui_elements_.size(); i++)
         ui_elements_.at(i)->destroy_window();
     ui_elements_.clear();
@@ -115,6 +116,7 @@ MessageLog& Game::log() const
 void Game::main_loop()
 {
     ui_msglog_ = add_element(std::make_unique<MessageLog>());
+    ui_input_ = add_element(std::make_unique<Input>());
     gorp::log().message("{G}Welcome, brave adventurer to the perilous realms of {C}GORP{G}!");
     gorp::log().message("");
 

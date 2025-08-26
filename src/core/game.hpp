@@ -37,6 +37,7 @@ private:
     std::unique_ptr<TitleScreen>    title_screen_ptr_;  // Pointer to the title screen object.
     std::vector<std::unique_ptr<Element>>   ui_elements_;       // The UI elements on screen right now.
     uint32_t                        ui_element_id_counter_;     // The counter for generating unique UI element IDs.
+    uint32_t                        ui_input_;          // The vector ID of the Input stored in ui_elements_.
     uint32_t                        ui_msglog_;         // The vector ID of the MessageLog stored in ui_elements_.
 };
 

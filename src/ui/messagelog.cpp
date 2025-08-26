@@ -53,6 +53,8 @@ void MessageLog::render()
     const uint16_t window_h = window_->size().y;
     window_->clear();
     window_->box();
+    window_->put(Glyph::BOX_LVR, Vector2(0, window_->size().y - 1));
+    window_->put(Glyph::BOX_LVL, Vector2(window_->size().x - 1, window_->size().y - 1));
 
     int end_line = window_h - 2;
     if (log_processed_.size() < static_cast<unsigned int>(end_line)) end_line = log_processed_.size();
