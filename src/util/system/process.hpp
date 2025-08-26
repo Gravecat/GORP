@@ -1,4 +1,4 @@
-// util/process.hpp -- Ugly Windows-specific code for determining if more than one copy of the binary is running at once.
+// util/system/process.hpp -- Ugly Windows-specific code for determining if more than one copy of the binary is running at once.
 // I think I found this on Stack Overflow or something and modified it a bit. Here be monsters.
 // Raine "Gravecat" Simmons, 2019, 2023, 2025.
 
