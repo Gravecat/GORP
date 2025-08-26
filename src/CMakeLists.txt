@@ -74,7 +74,7 @@ if(TARGET_WINDOWS)
 
   # Platform-specific libraries.
   add_definitions(-DWIN32_LEAN_AND_MEAN)
-  set(OS_LIBRARIES mingw32 shlwapi)
+  set(OS_LIBRARIES mingw32 shlwapi ntdll)
   if(DEBUG_BUILD)
     set(SFML_LIBRARIES sfml-graphics-d sfml-window-d sfml-audio-d sfml-system-d)
   else()
@@ -131,6 +131,7 @@ set(GORP_CPPS
   util/file/yaml.cpp
   util/stringutils.cpp
   util/system/process.cpp
+  util/system/winver.cpp
   world/codex.cpp
 )
 

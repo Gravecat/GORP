@@ -25,6 +25,7 @@
 #include "util/file/fileutils.hpp"
 #include "util/file/yaml.hpp"
 #include "util/stringutils.hpp"
+#include "util/system/winver.hpp"
 
 #ifdef GORP_TARGET_LINUX
 #include <X11/Xlib.h>   // Include this *after* SFML or the compiler goes crazy.
@@ -37,8 +38,11 @@ Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), degaus
 {
     core().log("Attempting to initialize SFML and create OpenGL context.");
 
+    // From what I gather, the miniaudio warning is because of an issue that may occur with Windows 11 and certain USB audio devices specifically.
+    // Because of this, we'll just add this extra message if we're running Windows 11.
+    if (winver::is_windows_11()) core().log("Any miniaudio WASAPI warning messages on the next line can probably be ignored.");
+
     // Load the degauss sound from the game data.
-    core().log("Loading CRT degauss sound...");
     degauss_sound_ = std::make_unique<OggSound>("crt-degauss");
 
     // Define the desired OpenGL context settings.
