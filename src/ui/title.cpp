@@ -4,7 +4,6 @@
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "3rdparty/sam/sam.hpp"
 #include "cmake/version.hpp"
 #include "core/core.hpp"
 #include "core/game.hpp"
@@ -55,19 +54,14 @@ TitleScreen::TitleOption TitleScreen::render()
 {
     Terminal &term = terminal();
     sf::Clock audio_timer, blink_timer;
-    bool sam_played = false, music_started = false;
+    bool music_started = false;
     int next_blink = random::get<int>(2000, 10000);
     redraw();
 
     int result;
     while(true)
     {
-        if (!sam_played && audio_timer.getElapsedTime().asMilliseconds() > 1500)
-        {
-            sam::sam_say(backronym_ + ".");
-            sam_played = true;
-        }
-        else if (!music_started && audio_timer.getElapsedTime().asMilliseconds() > 5000)
+        if (!music_started && audio_timer.getElapsedTime().asMilliseconds() > 1500)
         {
             music_->play();
             music_started = true;

@@ -29,9 +29,6 @@ https://github.com/biojppm/rapidyaml
 Roguelike charset font copyright (c) 2013 Trihook.
 https://csdb.dk/forums/?roomid=13&topicid=97045&showallposts=1
 
-SAM by Sebastian Macke.
-https://github.com/s-macke/SAM
-
 SFML copyright (c) 2007-2025 Laurent Gomila.
 https://www.sfml-dev.org/
 
