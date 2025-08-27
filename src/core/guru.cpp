@@ -7,13 +7,13 @@
 #include <csignal>
 #include <cstdlib>  // EXIT_FAILURE
 #include <iostream>
+#include <SFML/System.hpp>
 
 #include "cmake/version.hpp"
 #include "core/core.hpp"
 #include "core/guru.hpp"
 #include "core/terminal/terminal.hpp"
 #include "core/terminal/window.hpp"
-#include "SFML/System.hpp"
 #include "util/file/binpath.hpp"
 #include "util/file/fileutils.hpp"
 #include "util/text/stringutils.hpp"

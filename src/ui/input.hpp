@@ -7,6 +7,7 @@
 #pragma once
 
 #include <SFML/System.hpp>
+
 #include "core/global.hpp"
 #include "ui/element.hpp"
 

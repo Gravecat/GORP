@@ -9,7 +9,6 @@
 #include "core/game.hpp"
 #include "core/terminal/terminal.hpp"
 #include "core/terminal/window.hpp"
-#include "SFML/Audio.hpp"
 #include "ui/title.hpp"
 #include "util/file/fileutils.hpp"
 #include "util/file/yaml.hpp"

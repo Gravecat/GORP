@@ -27,7 +27,6 @@ private:
 
     std::string                 backronym_;             // The randomly-assembled 'backronym' for GORP chosen this time around.
     bool                        blinking_;              // Whether or not the title-screen dragon is blinking.
-    bool                        floppy_played_;         // Has the floppy-disk sound effect played yet?
     std::string                 phrase_;                // The randomly-chosen phrase for the title screen.
     Window*                     title_screen_window_;   // The window where we render the title screen.
 };
