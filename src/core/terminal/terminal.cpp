@@ -273,9 +273,8 @@ Vector2 Terminal::get_middle() const { return size() / 2; }
 // Loads a PNG from the data files.
 sf::Image Terminal::load_png(const std::string &filename)
 {
-    std::vector<char> blob = fileutils::file_to_char_vec(core().datafile("png/" + filename + ".png"));
     sf::Image image;
-    if (!image.loadFromMemory(blob.data(), blob.size())) throw std::runtime_error("Failed to load image: " + filename);
+    if (!image.loadFromFile(core().datafile("png/" + filename + ".png"))) throw std::runtime_error("Failed to load image: " + filename);
     return image;
 }
 
