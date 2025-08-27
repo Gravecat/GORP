@@ -6,6 +6,7 @@
 
 #include "core/audio/sfxr.hpp"
 #include "core/game.hpp"
+#include "core/prefs.hpp"
 #include "core/terminal/terminal.hpp"
 #include "core/terminal/window.hpp"
 #include "ui/messagelog.hpp"
@@ -92,10 +93,12 @@ void MessageLog::recreate_window()
 void MessageLog::render()
 {
     const uint16_t window_h = window_->size().y;
+    const Colour box_colour = (prefs().shader() ? Colour::WHITE : Colour::GRAY);
+
     window_->clear();
-    window_->box();
-    window_->put(Glyph::BOX_LVR, Vector2(0, window_->size().y - 1));
-    window_->put(Glyph::BOX_LVL, Vector2(window_->size().x - 1, window_->size().y - 1));
+    window_->box(box_colour);
+    window_->put(Glyph::BOX_LVR, Vector2(0, window_->size().y - 1), box_colour);
+    window_->put(Glyph::BOX_LVL, Vector2(window_->size().x - 1, window_->size().y - 1), box_colour);
 
     int end_line = window_h - 2;
     if (log_processed_.size() < static_cast<unsigned int>(end_line)) end_line = log_processed_.size();

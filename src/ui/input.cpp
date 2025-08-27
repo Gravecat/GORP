@@ -6,6 +6,7 @@
 
 #include "core/audio/sfxr.hpp"
 #include "core/game.hpp"
+#include "core/prefs.hpp"
 #include "core/terminal/terminal.hpp"
 #include "core/terminal/window.hpp"
 #include "ui/input.hpp"
@@ -60,10 +61,12 @@ void Input::recreate_window()
 // Renders the input window.
 void Input::render()
 {
+    const Colour box_colour = (prefs().shader() ? Colour::WHITE : Colour::GRAY);
+
     window_->clear();
-    window_->box();
-    window_->put(Glyph::BOX_LVR, Vector2(0, 0));
-    window_->put(Glyph::BOX_LVL, Vector2(window_->size().x - 1, 0)); 
+    window_->box(box_colour);
+    window_->put(Glyph::BOX_LVR, Vector2(0, 0), box_colour);
+    window_->put(Glyph::BOX_LVL, Vector2(window_->size().x - 1, 0), box_colour); 
 
     const unsigned int max_width = window_->size().x - 4;
     unsigned int cursor_pos = input_.size() + 1;
