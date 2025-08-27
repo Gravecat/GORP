@@ -140,8 +140,7 @@ void Terminal::flip(bool update_screen)
             win->render_texture().display();
 
             sf::Sprite win_sprite(win->render_texture().getTexture());
-            sf::Vector2f render_pos((win->pos().x + render_offset().x) * TILE_SIZE * prefs().tile_scale(),
-                (win->pos().y + render_offset().y) * TILE_SIZE * prefs().tile_scale());
+            sf::Vector2f render_pos(win->pos().x * TILE_SIZE * prefs().tile_scale(), win->pos().y * TILE_SIZE * prefs().tile_scale());
             win_sprite.setPosition(render_pos);
             current_frame_->draw(win_sprite);
         }
@@ -431,25 +430,10 @@ void Terminal::remove_window(Window* win)
     core().nonfatal("Attempt to remove nonexistent window from stack.", Core::CORE_ERROR);
 }
 
-// Applies an offset to rendering, to avoid useless (obscured by the bevel) tiles.
-Vector2 Terminal::render_offset() const
-{
-    Prefs &pref = prefs();
-    if (!SHADER_BEZEL_RENDER) return {0, 0};
-
-    int main_x = main_window_.getSize().x;
-    int main_y = main_window_.getSize().y;
-
-    Vector2 result({std::max(1, static_cast<int>(main_x / 1.2f) / (150 * pref.tile_scale())), std::max(1, main_y / (150 * pref.tile_scale()))});
-
-    return result;
-}
-
 // Determines the size of the screen, in character width and height, taking tiles obscured by the shader into account.
 Vector2 Terminal::size() const
 {
     Vector2 result(main_window_.getSize().x / prefs().tile_scale() / TILE_SIZE, main_window_.getSize().y / prefs().tile_scale() / TILE_SIZE);
-    result = result - (render_offset() * 2);
     if (result.x < 1) result.x = 1;
     if (result.y < 1) result.y = 1;
     return result;

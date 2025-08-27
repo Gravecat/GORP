@@ -33,9 +33,6 @@ public:
     void    remove_window(Window* win); // Removes a Window from the stack. This is called automatically from Window's destructor.
 
 private:
-    // Just used for shader testing and tweaking, leave these along.
-    static constexpr bool SHADER_BEZEL_RENDER = false;
-
     // Internal rendering code, called by Window::print() and Window::put(), with the complex part handled by Terminal.
     void        print(sf::RenderTexture &tex, std::string str, Vector2 pos, Colour colour, Font font = Font::NORMAL);
     void        put(sf::RenderTexture &tex, int ch, Vector2 pos, Colour colour, Font font = Font::NORMAL);
@@ -45,7 +42,6 @@ private:
     sf::Image   load_png(const std::string &filename);  // Loads a PNG from the data files.
     void        load_sprites();     // Load the sprites from the static data.
     void        recreate_frames();  // Recreates the frame textures, after the window has resized.
-    Vector2     render_offset() const;  // Applies an offset to rendering, to avoid useless (obscured by the bevel) tiles.
 
     std::unique_ptr<sf::RenderTexture>  current_frame_, previous_frame_; // This is where we render updates to the screen, before applying the shader.
     std::unique_ptr<OggSound>   degauss_sound_; // The CRT degauss sound effect.
