@@ -20,8 +20,8 @@ public:
     void    set_playing_offset(sf::Time offset);    // Sets the offset for how far along this sample is playing.
 
 private:
-    std::unique_ptr<sf::Sound>  sound_ptr_; // The sf::Sound object, which contains additional data about the sound.
     sf::SoundBuffer sound_buffer_;          // The sound buffer -- this is where the sound data is stored in memory.
+    std::unique_ptr<sf::Sound>  sound_ptr_; // The sf::Sound object, which contains additional data about the sound.
 };
 
 }   // namespace gorp

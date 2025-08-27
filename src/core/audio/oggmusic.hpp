@@ -22,8 +22,7 @@ public:
     void    stop();         // Stops the music from playing.
 
 private:
-    std::vector<char>           music_vec_; // The raw binary data of the music file.
-    std::unique_ptr<sf::Music>  music_;     // sf::Music's interface to the music data. Must be defined *after* music_vec_.
+    std::unique_ptr<sf::Music>  music_; // A music file loaded into sf::Music.
 };
 
 }   // namespace gorp

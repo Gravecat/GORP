@@ -45,6 +45,7 @@ void Game::begin()
     auto title_screen_ptr = std::make_unique<TitleScreen>();
 
     const auto result = title_screen_ptr->render();
+    title_screen_ptr.reset(nullptr);
     switch(result)
     {
         case TitleScreen::TitleOption::QUIT:
@@ -55,7 +56,6 @@ void Game::begin()
             new_game();
             break;
     }
-    title_screen_ptr.reset(nullptr);
     main_loop();
 }
 

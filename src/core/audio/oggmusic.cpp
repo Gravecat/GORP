@@ -12,17 +12,20 @@ namespace gorp
 {
 
 // Constructor, loads a specified ogg file into memory.
-OggMusic::OggMusic(const std::string &filename)
+OggMusic::OggMusic(const std::string &filename) : music_(nullptr)
 {
     std::string full_filename = core().datafile("ogg/" + filename + ".ogg");
     if (!fileutils::file_exists(full_filename)) throw std::runtime_error("Missing audio file: " + filename + ".ogg");
-    music_vec_ = fileutils::file_to_char_vec(full_filename);
     music_ = std::make_unique<sf::Music>();
-    if (!music_->openFromMemory(music_vec_.data(), music_vec_.size())) throw std::runtime_error("Cannot load music file: " + filename + ".ogg");
+    if (!music_->openFromFile(full_filename)) throw std::runtime_error("Cannot load music file: " + filename + ".ogg");
 }
 
 // Destructor, cleans up used memory.
-OggMusic::~OggMusic() { music_.reset(nullptr); }
+OggMusic::~OggMusic()
+{
+    if (music_) music_->stop();
+    music_.reset(nullptr);
+}
 
 // Starts the music playing.
 void OggMusic::play() { music_->play(); }

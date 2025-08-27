@@ -47,7 +47,12 @@ TitleScreen::TitleScreen() : blinking_(false), floppy_played_(false), floppy_sou
 // Destructor, cleans up used memory.
 TitleScreen::~TitleScreen()
 {
-    music_.reset(nullptr);
+    if (title_screen_window_) terminal().remove_window(title_screen_window_);
+    if (music_)
+    {
+        music_->stop();
+        music_.reset(nullptr);
+    }
     floppy_sound_.reset(nullptr);
 }
 
@@ -91,13 +96,9 @@ TitleScreen::TitleOption TitleScreen::render()
         switch(result)
         {
             case '1':
-                music_->stop();
-                term.remove_window(title_screen_window_);
                 sfxr().play_sound("powerup");
                 return TitleOption::NEW_GAME;
             case '3':
-                music_->stop();
-                term.remove_window(title_screen_window_);
                 return TitleOption::QUIT;
             case Key::RESIZE: redraw(); break;
 
