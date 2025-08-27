@@ -4,7 +4,6 @@
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "core/audio/sfxr.hpp"
 #include "core/game.hpp"
 #include "core/prefs.hpp"
 #include "core/terminal/terminal.hpp"
@@ -27,9 +26,7 @@ bool Input::process_input(int key)
     if (key == '{' || key == '}') alphanumeric = false;
     if (alphanumeric)
     {
-        if (input_.size() >= MAX_INPUT_LENGTH) sfxr().play_sound("fail");
-        else if (key == ' ' && input_.at(input_.size() - 1) == ' ') return false;
-        else input_ += static_cast<char>(key);
+        if (input_.size() < MAX_INPUT_LENGTH && !(key == ' ' && input_.at(input_.size() - 1) == ' ')) input_ += static_cast<char>(key);
         return true;
     }
     else switch(key)

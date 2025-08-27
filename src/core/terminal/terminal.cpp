@@ -14,7 +14,6 @@
 
 #include "cmake/version.hpp"
 #include "core/audio/oggsound.hpp"
-#include "core/audio/sfxr.hpp"
 #include "core/core.hpp"
 #include "core/guru.hpp"
 #include "core/prefs.hpp"
@@ -183,8 +182,7 @@ int Terminal::get_key()
 
     auto adjust_tile_scale = [this, &pref](int adj) {
         int new_scale = pref.tile_scale() + adj;
-        if (new_scale < 1 || new_scale > 10) sfxr().play_sound("fail");
-        else
+        if (new_scale >= 1 && new_scale <= 10)
         {
             pref.set_tile_scale(new_scale);
             recreate_frames();

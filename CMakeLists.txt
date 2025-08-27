@@ -128,7 +128,6 @@ endif()
 set(GORP_CPPS
   src/core/audio/oggmusic.cpp
   src/core/audio/oggsound.cpp
-  src/core/audio/sfxr.cpp
   src/core/core.cpp
   src/core/game.cpp
   src/core/guru.cpp
@@ -185,7 +184,6 @@ target_link_libraries(gorp
   ${CMAKE_THREAD_LIBS_INIT}
   fantasyname
   rapidyaml
-  sfxr
 )
 
 # Post-build, make a 'bin' folder and copy the binary file in there.
@@ -197,4 +195,3 @@ add_custom_command(TARGET gorp POST_BUILD
 # Build some third-party code as separate binaries to be linked in.
 add_subdirectory(src/3rdparty/fantasyname)
 add_subdirectory(src/3rdparty/rapidyaml)
-add_subdirectory(src/3rdparty/sfxr)

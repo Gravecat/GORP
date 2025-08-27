@@ -15,9 +15,7 @@
 #include <csignal>
 #endif
 
-#include "3rdparty/sfxr/sfxr.hpp"
 #include "cmake/source.hpp"
-#include "core/audio/sfxr.hpp"
 #include "core/core.hpp"
 #include "core/game.hpp"
 #include "core/guru.hpp"
@@ -32,13 +30,12 @@
 namespace gorp {
 
 // Constructor, sets up the Core object.
-Core::Core() : game_ptr_(nullptr), guru_ptr_(nullptr), prefs_ptr_(nullptr), sfxr_ptr_(nullptr), terminal_ptr_(nullptr) { }
+Core::Core() : game_ptr_(nullptr), guru_ptr_(nullptr), prefs_ptr_(nullptr), terminal_ptr_(nullptr) { }
 
 // Cleans up all Core-managed objects.
 void Core::cleanup()
 {
     game_ptr_.reset(nullptr);
-    sfxr_ptr_.reset(nullptr);
     terminal_ptr_.reset(nullptr);
     guru_ptr_.reset(nullptr);
     prefs_ptr_.reset(nullptr);
@@ -142,7 +139,6 @@ void Core::init_core(std::vector<std::string> parameters)
         {
             prefs_ptr_ = std::make_unique<Prefs>();
             terminal_ptr_ = std::make_unique<Terminal>();
-            sfxr_ptr_ = std::make_unique<Sfxr>();
             game_ptr_ = std::make_unique<Game>();
         }
     }
@@ -180,13 +176,6 @@ Prefs& Core::prefs() const
 {
     if (!prefs_ptr_) throw std::runtime_error("Attempt to access null Prefs pointer!");
     return *prefs_ptr_;
-}
-
-// Returns a reference to the Sfxr object.
-Sfxr& Core::sfxr() const
-{
-    if (!sfxr_ptr_) throw std::runtime_error("Attempt to access null Sfxr pointer!");
-    return *sfxr_ptr_;
 }
 
 // Returns a reference to the Terminal handler object.

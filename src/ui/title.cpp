@@ -7,7 +7,6 @@
 #include "cmake/version.hpp"
 #include "core/audio/oggmusic.hpp"
 #include "core/audio/oggsound.hpp"
-#include "core/audio/sfxr.hpp"
 #include "core/core.hpp"
 #include "core/game.hpp"
 #include "core/terminal/terminal.hpp"
@@ -95,15 +94,10 @@ TitleScreen::TitleOption TitleScreen::render()
         result = term.get_key();
         switch(result)
         {
-            case '1':
-                sfxr().play_sound("powerup");
-                return TitleOption::NEW_GAME;
-            case '3':
-                return TitleOption::QUIT;
+            case '1': return TitleOption::NEW_GAME;
+            case '3': return TitleOption::QUIT;
             case Key::RESIZE: redraw(); break;
-
             case Key::F12: render_test(); redraw(); break;
-
         }
     }
     return TitleOption::QUIT;

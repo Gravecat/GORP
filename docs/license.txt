@@ -35,11 +35,8 @@ https://csdb.dk/forums/?roomid=13&topicid=97045&showallposts=1
 SFML copyright (c) 2007-2025 Laurent Gomila.
 https://www.sfml-dev.org/
 
-sfxr copyright (c) 2007 Tomas Pettersson <drpetter@gmail.com>
-https://github.com/tjohnman/sfxr-sdl2
-
 --------------------------------------------------------------------------------
-MIT License (for Random for modern C++, Rapid YAML, sfxr):
+MIT License (for Rapid YAML / Random for modern C++):
 --------------------------------------------------------------------------------
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
