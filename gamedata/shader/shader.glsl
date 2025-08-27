@@ -38,6 +38,7 @@ uniform float scanlineDriftSpeed;
 uniform float scanlineIntensity;
 uniform float vignetteIntensity;
 
+uniform bool bezelRender;
 uniform bool crtGeometry;
 
 out vec4 fragColor;
@@ -184,15 +185,16 @@ void main() {
     vec2 originalUV = gl_TexCoord[0].xy;
     vec2 texCoordRemapped = curveRemapUV(originalUV);
 
-    /*
-    vec4 bezelColor = getBezelColor(originalUV, texCoordRemapped);
+    if (bezelRender)
+    {
+        vec4 bezelColor = getBezelColor(originalUV, texCoordRemapped);
 
-    if (texCoordRemapped.x < 0.01 || texCoordRemapped.x > 0.99 || 
-        texCoordRemapped.y < 0.01 || texCoordRemapped.y > 0.99) {
-        fragColor = bezelColor;
-        return;
+        if (texCoordRemapped.x < 0.03 || texCoordRemapped.x > 0.97 || 
+            texCoordRemapped.y < 0.03 || texCoordRemapped.y > 0.97) {
+            fragColor = bezelColor;
+            return;
+        }
     }
-    */
 
     vec2 distortedTexCoord = getDistortedUV(texCoordRemapped);
 

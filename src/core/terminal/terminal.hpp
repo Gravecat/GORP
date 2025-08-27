@@ -38,6 +38,7 @@ private:
     void        put(sf::RenderTexture &tex, int ch, Vector2 pos, Colour colour, Font font = Font::NORMAL);
 
     // Other functions that are only used internally by Terminal.
+    bool        bezel_render() const;   // Returns true if the current shader mode wants a bezel to be rendered.
     void        flip(bool update_screen = true);    // Refreshes the terminal after rendering. This is called automatically before the event loop.
     sf::Image   load_png(const std::string &filename);  // Loads a PNG from the data files.
     void        load_sprites();     // Load the sprites from the static data.

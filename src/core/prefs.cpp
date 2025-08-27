@@ -80,7 +80,7 @@ void Prefs::set_auto_rescale(bool toggle) { auto_rescale_ = toggle; save_prefs()
 // Sets the current shader mode (see shader_mode_ below for values).
 void Prefs::set_shader_mode(uint8_t mode)
 {
-    if (mode > 2) throw GuruMeditation("Invalid shader mode requested", mode, 2);
+    if (mode > 3) throw GuruMeditation("Invalid shader mode requested", mode, 3);
     shader_mode_ = mode;
     save_prefs();
 }

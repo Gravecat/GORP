@@ -29,7 +29,8 @@ public:
 
 private:
     bool    auto_rescale_;  // Are we auto-rescaling as the window size changes?
-    uint8_t shader_mode_;   // The current shader mode (0 = no shader, 1 = full shader, 2 = shader with no CRT geometry distortion or vignette)
+    uint8_t shader_mode_;   // The current shader mode (0 = no shader, 1 = full shader with bezel, 2 = full shader without bezel, 2 = shader with no CRT
+                            // geometry distortion, vignette or bezel)
     int     tile_scale_;    // The size that tiles are scaled on the screen.
 };
 

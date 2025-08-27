@@ -99,6 +99,7 @@ Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), degaus
     shader_.setUniform("tex", current_frame_->getTexture());
     shader_.setUniform("textureSize", sf::Vector2f(current_frame_->getSize()));
     shader_.setUniform("crtGeometry", shader_geom());
+    shader_.setUniform("bezelRender", bezel_render());
 
     core().log("SFML initialized successfully.");
     load_sprites();
@@ -237,7 +238,8 @@ int Terminal::get_key()
             {
                 case sf::Keyboard::Scancode::F1: set_shader_mode(1); return Key::RESIZE;
                 case sf::Keyboard::Scancode::F2: set_shader_mode(2); return Key::RESIZE;
-                case sf::Keyboard::Scancode::F3: set_shader_mode(0); return Key::RESIZE;
+                case sf::Keyboard::Scancode::F3: set_shader_mode(3); return Key::RESIZE;
+                case sf::Keyboard::Scancode::F4: set_shader_mode(0); return Key::RESIZE;
                 case sf::Keyboard::Scancode::F5: adjust_tile_scale(-1); return Key::RESIZE;
                 case sf::Keyboard::Scancode::F6: adjust_tile_scale(1); return Key::RESIZE;
 
@@ -254,7 +256,6 @@ int Terminal::get_key()
                 case sf::Keyboard::Scancode::End: return Key::END;
                 case sf::Keyboard::Scancode::PageUp: return Key::PAGE_UP;
                 case sf::Keyboard::Scancode::PageDown: return Key::PAGE_DOWN;
-                case sf::Keyboard::Scancode::F4: return Key::F4;
                 case sf::Keyboard::Scancode::F7: return Key::F7;
                 case sf::Keyboard::Scancode::F8: return Key::F8;
                 case sf::Keyboard::Scancode::F9: return Key::F9;
@@ -459,15 +460,21 @@ void Terminal::set_shader_mode(uint8_t mode)
 {
     prefs().set_shader_mode(mode);
     shader_.setUniform("crtGeometry", shader_geom());
+    shader_.setUniform("bezelRender", bezel_render());
 }
 
 // Returns true if the current shader mode affects the screen geometry, false if not.
 bool Terminal::shader_geom() const
 {
-    // Currently, only mode 1 affects geometry. We'll keep this function here to make it easier to add more modes in the future, without having to update a
-    // whole bunch of other code at the same time.
-    return (prefs().shader_mode() == 1);
+    switch (prefs().shader_mode())
+    {
+        case 1: case 2: return true;
+        default: return false;
+    }
 }
+
+// Returns true if the current shader mode wants a bezel to be rendered.
+bool Terminal::bezel_render() const { return (prefs().shader_mode() == 1); }
 
 // Determines the size of the screen, in character width and height, taking tiles obscured by the shader into account.
 Vector2 Terminal::size() const
