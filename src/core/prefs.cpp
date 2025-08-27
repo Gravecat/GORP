@@ -11,7 +11,7 @@
 namespace gorp {
 
 // Constructor, sets default values.
-Prefs::Prefs() : FileReader(BinPath::game_path("userdata/prefs.dat"), true), FileWriter(), auto_rescale_(true), shader_mode_(2), tile_scale_(2)
+Prefs::Prefs() : FileReader(BinPath::game_path("userdata/prefs.dat"), true), FileWriter(), auto_rescale_(true), shader_(true), tile_scale_(2)
 {
     if (!data_.size())  // No prefs file right now, so go with default values.
     {
@@ -45,8 +45,7 @@ Prefs::Prefs() : FileReader(BinPath::game_path("userdata/prefs.dat"), true), Fil
 
     const uint8_t flags_a = read_data<uint8_t>();
     auto_rescale_ = flags_a & 1;
-
-    shader_mode_ = read_data<uint8_t>();
+    shader_ = flags_a & 2;
 }
 
 // Checks if the tile scale changes automatically when the window resizes.
@@ -63,27 +62,14 @@ void Prefs::save_prefs()
     write_data<char>('8');
     write_data<uint32_t>(PREFS_VERSION);
 
-    uint8_t flags_a = (auto_rescale_ ? 1 : 0);
+    uint8_t flags_a = (auto_rescale_ ? 1 : 0) | (shader_ ? 2 : 0);
     write_data<uint8_t>(flags_a);
-
-    write_data<uint8_t>(shader_mode_);
 
     close_file();
 }
 
-// Easier access than calling core().prefs()
-Prefs& prefs() { return core().prefs(); }
-
 // Sets whether or not the tile scale auto-changes on window resize.
 void Prefs::set_auto_rescale(bool toggle) { auto_rescale_ = toggle; save_prefs(); }
-
-// Sets the current shader mode (see shader_mode_ below for values).
-void Prefs::set_shader_mode(uint8_t mode)
-{
-    if (mode > 3) throw GuruMeditation("Invalid shader mode requested", mode, 3);
-    shader_mode_ = mode;
-    save_prefs();
-}
 
 // Sets a new tile scale.
 void Prefs::set_tile_scale(int scale)
@@ -92,10 +78,20 @@ void Prefs::set_tile_scale(int scale)
     tile_scale_ = scale;
 }
 
-// Returns the shader mode (see shader_mode_ in prefs.hpp for values).
-uint8_t Prefs::shader_mode() const { return shader_mode_; }
+// Sets the shader on or off.
+void Prefs::set_shader(bool shader)
+{
+    shader_ = shader;
+    save_prefs();
+}
+
+// Is the shader enabled?
+bool Prefs::shader() const { return shader_; }
 
 // Retrieves the tile scaling factor.
 int Prefs::tile_scale() const { return tile_scale_; }
+
+// Easier access than calling core().prefs()
+Prefs& prefs() { return core().prefs(); }
 
 };
