@@ -33,7 +33,7 @@ uniform float scanlineCount = 200.0;
 uniform float scanlineDriftAmount = 0.05;
 uniform float scanlineDriftSpeed = 0.1;
 uniform float scanlineIntensity = 0.2;
-uniform float vignetteIntensity = 0.23;
+uniform float vignetteIntensity = 0.18;
 
 out vec4 fragColor;
 
