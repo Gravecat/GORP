@@ -232,7 +232,7 @@ void main() {
     scanline = (1.0 - scanlineIntensity) + scanlineIntensity * scanline;
 
     float edgeFade = 0.0;
-    if (crtGeometry) edgeFade = getScreenEdgeFade(texCoordRemapped);
+    if (bezelRender) edgeFade = getScreenEdgeFade(texCoordRemapped);
 
     vec4 finalColor = pixel;
 
@@ -243,7 +243,7 @@ void main() {
     finalColor *= vec4(vec3(scanline * (1.0 - edgeFade)), 1.0);
 
     // Apply vignette
-    if (crtGeometry) finalColor.rgb *= getVignette(texCoordRemapped);
+    finalColor.rgb *= getVignette(texCoordRemapped);
 
     // Apply brightness flicker
     float flicker = 1.0 + (sin(time * flickerSpeed) * flickerAmount);

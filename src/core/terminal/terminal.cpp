@@ -238,10 +238,10 @@ int Terminal::get_key()
             {
                 switch (key_pressed->scancode)
                 {
-                    case sf::Keyboard::Scancode::F1: set_shader_mode(1); return Key::RESIZE;
-                    case sf::Keyboard::Scancode::F2: set_shader_mode(2); return Key::RESIZE;
-                    case sf::Keyboard::Scancode::F3: set_shader_mode(3); return Key::RESIZE;
-                    case sf::Keyboard::Scancode::F4: set_shader_mode(0); return Key::RESIZE;
+                    case sf::Keyboard::Scancode::F1: set_shader_mode(0); return Key::RESIZE;
+                    case sf::Keyboard::Scancode::F2: set_shader_mode(3); return Key::RESIZE;
+                    case sf::Keyboard::Scancode::F3: set_shader_mode(2); return Key::RESIZE;
+                    case sf::Keyboard::Scancode::F4: set_shader_mode(1); return Key::RESIZE;
                     case sf::Keyboard::Scancode::F5: adjust_tile_scale(-1); return Key::RESIZE;
                     case sf::Keyboard::Scancode::F6: adjust_tile_scale(1); return Key::RESIZE;
 
@@ -448,7 +448,7 @@ void Terminal::remove_window(Window* win)
 Vector2 Terminal::render_offset() const
 {
     Prefs &pref = prefs();
-    if (!shader_geom()) return {0, 0};
+    if (!bezel_render()) return {0, 0};
 
     int main_x = main_window_.getSize().x;
     int main_y = main_window_.getSize().y;

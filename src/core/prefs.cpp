@@ -11,7 +11,7 @@
 namespace gorp {
 
 // Constructor, sets default values.
-Prefs::Prefs() : FileReader(BinPath::game_path("userdata/prefs.dat"), true), FileWriter(), auto_rescale_(true), shader_mode_(1), tile_scale_(2)
+Prefs::Prefs() : FileReader(BinPath::game_path("userdata/prefs.dat"), true), FileWriter(), auto_rescale_(true), shader_mode_(2), tile_scale_(2)
 {
     if (!data_.size())  // No prefs file right now, so go with default values.
     {
