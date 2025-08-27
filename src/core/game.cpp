@@ -40,8 +40,8 @@ uint32_t Game::add_element(std::unique_ptr<Element> element)
 void Game::begin()
 {
     codex_ptr_ = std::make_unique<Codex>();
-    auto title_screen_ptr = std::make_unique<TitleScreen>();
 
+    auto title_screen_ptr = std::make_unique<TitleScreen>();
     const auto result = title_screen_ptr->render();
     title_screen_ptr.reset(nullptr);
     switch(result)
