@@ -234,46 +234,49 @@ int Terminal::get_key()
         }
         if (const auto* key_pressed = event->getIf<sf::Event::KeyPressed>())
         {
-            switch (key_pressed->scancode)
+            if (!key_pressed->alt && !key_pressed->control & !key_pressed->shift)
             {
-                case sf::Keyboard::Scancode::F1: set_shader_mode(1); return Key::RESIZE;
-                case sf::Keyboard::Scancode::F2: set_shader_mode(2); return Key::RESIZE;
-                case sf::Keyboard::Scancode::F3: set_shader_mode(3); return Key::RESIZE;
-                case sf::Keyboard::Scancode::F4: set_shader_mode(0); return Key::RESIZE;
-                case sf::Keyboard::Scancode::F5: adjust_tile_scale(-1); return Key::RESIZE;
-                case sf::Keyboard::Scancode::F6: adjust_tile_scale(1); return Key::RESIZE;
+                switch (key_pressed->scancode)
+                {
+                    case sf::Keyboard::Scancode::F1: set_shader_mode(1); return Key::RESIZE;
+                    case sf::Keyboard::Scancode::F2: set_shader_mode(2); return Key::RESIZE;
+                    case sf::Keyboard::Scancode::F3: set_shader_mode(3); return Key::RESIZE;
+                    case sf::Keyboard::Scancode::F4: set_shader_mode(0); return Key::RESIZE;
+                    case sf::Keyboard::Scancode::F5: adjust_tile_scale(-1); return Key::RESIZE;
+                    case sf::Keyboard::Scancode::F6: adjust_tile_scale(1); return Key::RESIZE;
 
-                case sf::Keyboard::Scancode::Backspace: return Key::BACKSPACE;
-                case sf::Keyboard::Scancode::Tab: return Key::TAB;
-                case sf::Keyboard::Scancode::Enter: return Key::ENTER;
-                case sf::Keyboard::Scancode::Up: return Key::ARROW_UP;
-                case sf::Keyboard::Scancode::Down: return Key::ARROW_DOWN;
-                case sf::Keyboard::Scancode::Left: return Key::ARROW_LEFT;
-                case sf::Keyboard::Scancode::Right: return Key::ARROW_RIGHT;
-                case sf::Keyboard::Scancode::Delete: return Key::DELETE_KEY;
-                case sf::Keyboard::Scancode::Insert: return Key::INSERT;
-                case sf::Keyboard::Scancode::Home: return Key::HOME;
-                case sf::Keyboard::Scancode::End: return Key::END;
-                case sf::Keyboard::Scancode::PageUp: return Key::PAGE_UP;
-                case sf::Keyboard::Scancode::PageDown: return Key::PAGE_DOWN;
-                case sf::Keyboard::Scancode::F7: return Key::F7;
-                case sf::Keyboard::Scancode::F8: return Key::F8;
-                case sf::Keyboard::Scancode::F9: return Key::F9;
-                case sf::Keyboard::Scancode::F10: return Key::F10;
-                case sf::Keyboard::Scancode::F11: return Key::F11;
-                case sf::Keyboard::Scancode::F12: return Key::F12;
-                case sf::Keyboard::Scancode::Numpad0: return Key::KP0;
-                case sf::Keyboard::Scancode::Numpad1: return Key::KP1;
-                case sf::Keyboard::Scancode::Numpad2: return Key::KP2;
-                case sf::Keyboard::Scancode::Numpad3: return Key::KP3;
-                case sf::Keyboard::Scancode::Numpad4: return Key::KP4;
-                case sf::Keyboard::Scancode::Numpad5: return Key::KP5;
-                case sf::Keyboard::Scancode::Numpad6: return Key::KP6;
-                case sf::Keyboard::Scancode::Numpad7: return Key::KP7;
-                case sf::Keyboard::Scancode::Numpad8: return Key::KP8;
-                case sf::Keyboard::Scancode::Numpad9: return Key::KP9;
-                case sf::Keyboard::Scancode::Escape: return Key::ESCAPE;
-                default: break;
+                    case sf::Keyboard::Scancode::Backspace: return Key::BACKSPACE;
+                    case sf::Keyboard::Scancode::Tab: return Key::TAB;
+                    case sf::Keyboard::Scancode::Enter: return Key::ENTER;
+                    case sf::Keyboard::Scancode::Up: return Key::ARROW_UP;
+                    case sf::Keyboard::Scancode::Down: return Key::ARROW_DOWN;
+                    case sf::Keyboard::Scancode::Left: return Key::ARROW_LEFT;
+                    case sf::Keyboard::Scancode::Right: return Key::ARROW_RIGHT;
+                    case sf::Keyboard::Scancode::Delete: return Key::DELETE_KEY;
+                    case sf::Keyboard::Scancode::Insert: return Key::INSERT;
+                    case sf::Keyboard::Scancode::Home: return Key::HOME;
+                    case sf::Keyboard::Scancode::End: return Key::END;
+                    case sf::Keyboard::Scancode::PageUp: return Key::PAGE_UP;
+                    case sf::Keyboard::Scancode::PageDown: return Key::PAGE_DOWN;
+                    case sf::Keyboard::Scancode::F7: return Key::F7;
+                    case sf::Keyboard::Scancode::F8: return Key::F8;
+                    case sf::Keyboard::Scancode::F9: return Key::F9;
+                    case sf::Keyboard::Scancode::F10: return Key::F10;
+                    case sf::Keyboard::Scancode::F11: return Key::F11;
+                    case sf::Keyboard::Scancode::F12: return Key::F12;
+                    case sf::Keyboard::Scancode::Numpad0: return Key::KP0;
+                    case sf::Keyboard::Scancode::Numpad1: return Key::KP1;
+                    case sf::Keyboard::Scancode::Numpad2: return Key::KP2;
+                    case sf::Keyboard::Scancode::Numpad3: return Key::KP3;
+                    case sf::Keyboard::Scancode::Numpad4: return Key::KP4;
+                    case sf::Keyboard::Scancode::Numpad5: return Key::KP5;
+                    case sf::Keyboard::Scancode::Numpad6: return Key::KP6;
+                    case sf::Keyboard::Scancode::Numpad7: return Key::KP7;
+                    case sf::Keyboard::Scancode::Numpad8: return Key::KP8;
+                    case sf::Keyboard::Scancode::Numpad9: return Key::KP9;
+                    case sf::Keyboard::Scancode::Escape: return Key::ESCAPE;
+                    default: break;
+                }
             }
         }
     }
