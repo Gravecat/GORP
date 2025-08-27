@@ -1,24 +1,15 @@
-# .gitattributes
-#
 # This is all pretty standard stuff, mostly telling GitHub Linguist what file types are, as well as excluding any third-party code from
 # counting towards the stats. A lot of this stuff is auto-detected by Linguist, but it's not perfect. Just gonna specify a bunch of them to make absolutely
 # sure it knows what's what.
-#
-# No licensing for this file, it's super basic stuff. Do with it as you will.
 
-*.bash text linguist-language=Shell
-*.c text linguist-language=C
-*.cc text linguist-language=C++
-*.cmake text linguist-language=CMake
 *.cpp text linguist-language=C++
 *.cpp.in text linguist-language=C++
 *.glsl text linguist-language=GLSL
-*.h text linguist-language=C
 *.hpp text linguist-language=C++
 *.hpp.in text linguist-language=C++
 *.ico binary linguist-vendored
 *.md text
-*.rc text
-*.sh text linguist-language=Shell
+*.rc.in text
 *.txt text
 *.yml text linguist-detectable=true linguist-language=YAML
+CMakeLists.txt text linguist-language=CMake
