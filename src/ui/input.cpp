@@ -37,8 +37,12 @@ bool Input::process_input(int key)
             else sfxr().play_sound("fail");
             return true;
         case Key::ENTER:
-            game().process_input(input_.substr(2));
-            input_ = "> ";
+            if (input_.size() > 2)
+            {
+                game().process_input(input_.substr(2));
+                input_ = "> ";
+            }
+            else sfxr().play_sound("fail");
             return true;
         default: return false;
     }
@@ -50,7 +54,7 @@ void Input::recreate_window()
     Terminal &term = terminal();
     const Vector2 term_size = term.size();
     if (window_) term.remove_window(window_);
-    window_ = term.add_window(Vector2(term_size.x, 3), Vector2(0, term_size.y - 3));
+    window_ = term.add_window(Vector2(std::max(5, term_size.x), 3), Vector2(0, term_size.y - 3));
 }
 
 // Renders the input window.

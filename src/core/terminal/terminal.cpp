@@ -229,9 +229,7 @@ int Terminal::get_key()
         }
         if (const auto* text_entered = event->getIf<sf::Event::TextEntered>())
         {
-            if (text_entered->unicode == '+') { adjust_tile_scale(1); return Key::RESIZE; }
-            else if (text_entered->unicode == '-') { adjust_tile_scale(-1); return Key::RESIZE; }
-            else if (text_entered->unicode >= ' ' && text_entered->unicode < 128) return text_entered->unicode;
+            if (text_entered->unicode >= ' ' && text_entered->unicode <= '~') return text_entered->unicode;
         }
         if (const auto* key_pressed = event->getIf<sf::Event::KeyPressed>())
         {
@@ -240,6 +238,9 @@ int Terminal::get_key()
                 case sf::Keyboard::Scancode::F1: set_shader_mode(1); return Key::RESIZE;
                 case sf::Keyboard::Scancode::F2: set_shader_mode(2); return Key::RESIZE;
                 case sf::Keyboard::Scancode::F3: set_shader_mode(0); return Key::RESIZE;
+                case sf::Keyboard::Scancode::F5: adjust_tile_scale(-1); return Key::RESIZE;
+                case sf::Keyboard::Scancode::F6: adjust_tile_scale(1); return Key::RESIZE;
+
                 case sf::Keyboard::Scancode::Backspace: return Key::BACKSPACE;
                 case sf::Keyboard::Scancode::Tab: return Key::TAB;
                 case sf::Keyboard::Scancode::Enter: return Key::ENTER;
@@ -254,8 +255,6 @@ int Terminal::get_key()
                 case sf::Keyboard::Scancode::PageUp: return Key::PAGE_UP;
                 case sf::Keyboard::Scancode::PageDown: return Key::PAGE_DOWN;
                 case sf::Keyboard::Scancode::F4: return Key::F4;
-                case sf::Keyboard::Scancode::F5: return Key::F5;
-                case sf::Keyboard::Scancode::F6: return Key::F6;
                 case sf::Keyboard::Scancode::F7: return Key::F7;
                 case sf::Keyboard::Scancode::F8: return Key::F8;
                 case sf::Keyboard::Scancode::F9: return Key::F9;

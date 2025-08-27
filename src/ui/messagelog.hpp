@@ -15,6 +15,7 @@ class MessageLog : public Element {
 public:
             MessageLog();   // Constructor, sets up the message log window.
     void    message(const std::string &str);    // Adds a string to the message log.
+    bool    process_input(int key) override;    // Processes keyboard input from the player.
     void    recreate_window() override;         // (Re)creates the render window.
     void    render() override;                  // Renders the message log window.
 
@@ -22,11 +23,14 @@ private:
     void    process_messages(); // Formats the messages in the log to fit in the window.
 
     static constexpr int    MAX_UNPROCESSED_MESSAGES = 200; // The maximum amount of unprocessed lines before we start deleting older ones.
+    static constexpr int    PAGE_SCROLL =   8;      // How many lines of text are scrolled with PageUp/PageDown.
 
     std::vector<std::string>    log_processed_;     // The formatted strings from log_unprocessed_ below.
     std::vector<std::string>    log_unprocessed_;   // The unprocessed/unformatted lines in the message log.
+    unsigned int                max_offset_;        // The precalculated maximum offset value for the message log scrolling.
+    unsigned int                offset_;            // The offset position of the message log.
 };
 
-MessageLog& log();  // Easier access than using game().log()
+void msg(const std::string &str = "");  // Easier access than using game().log().message()
 
 }   // namespace gorp
