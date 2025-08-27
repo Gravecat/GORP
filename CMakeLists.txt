@@ -93,9 +93,9 @@ if(TARGET_WINDOWS)
   add_compile_definitions(WIN32_LEAN_AND_MEAN)
   set(OS_LIBRARIES mingw32 shlwapi ntdll)
   if(DEBUG_BUILD)
-    set(SFML_LIBRARIES sfml-graphics-d sfml-window-d sfml-audio-d sfml-system-d)
+    set(SFML_LIBRARIES sfml-graphics-d sfml-window-d sfml-system-d)
   else()
-    set(SFML_LIBRARIES sfml-graphics sfml-window sfml-audio sfml-system)
+    set(SFML_LIBRARIES sfml-graphics sfml-window sfml-system)
   endif()
   set(GORP_BIN "$<TARGET_FILE:gorp>.exe")
 
@@ -113,11 +113,11 @@ if(TARGET_WINDOWS)
 # Linux:
 elseif(TARGET_LINUX)
   add_compile_definitions(GORP_TARGET_LINUX)
-  set(OS_LIBRARIES X11 Xrandr Xi Xcursor udev FLAC vorbis vorbisenc vorbisfile ogg)
+  set(OS_LIBRARIES X11 Xrandr Xi Xcursor udev)
   if(DEBUG_BUILD)
-    set(SFML_LIBRARIES sfml-graphics-s-d sfml-window-s-d sfml-audio-s-d sfml-system-s-d)
+    set(SFML_LIBRARIES sfml-graphics-s-d sfml-window-s-d sfml-system-s-d)
   else()
-    set(SFML_LIBRARIES sfml-graphics-s sfml-window-s sfml-audio-s sfml-system-s)
+    set(SFML_LIBRARIES sfml-graphics-s sfml-window-s sfml-system-s)
   endif()
 
 else()
@@ -126,8 +126,6 @@ endif()
 
 # Source files.
 set(GORP_CPPS
-  src/core/audio/oggmusic.cpp
-  src/core/audio/oggsound.cpp
   src/core/core.cpp
   src/core/game.cpp
   src/core/guru.cpp
@@ -145,7 +143,6 @@ set(GORP_CPPS
   src/util/file/filewriter.cpp
   src/util/file/yaml.cpp
   src/util/system/process.cpp
-  src/util/system/winver.cpp
   src/util/text/namegen.cpp
   src/util/text/stringutils.cpp
   src/world/codex.cpp

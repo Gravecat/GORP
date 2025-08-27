@@ -13,7 +13,6 @@
 #endif
 
 #include "cmake/version.hpp"
-#include "core/audio/oggsound.hpp"
 #include "core/core.hpp"
 #include "core/guru.hpp"
 #include "core/prefs.hpp"
@@ -23,7 +22,6 @@
 #include "util/file/filereader.hpp"
 #include "util/file/fileutils.hpp"
 #include "util/file/yaml.hpp"
-#include "util/system/winver.hpp"
 #include "util/text/stringutils.hpp"
 
 #ifdef GORP_TARGET_LINUX
@@ -33,16 +31,9 @@
 namespace gorp {
 
 // Constructor, sets up default values but does not initialize the faux-terminal.
-Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), degauss_sound_(nullptr), sprite_max_(0), window_pixels_({0, 0})
+Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), sprite_max_(0), window_pixels_({0, 0})
 {
     core().log("Attempting to initialize SFML and create OpenGL context.");
-
-    // From what I gather, the miniaudio warning is because of an issue that may occur with Windows 11 and certain USB audio devices specifically.
-    // Because of this, we'll just add this extra message if we're running Windows 11.
-    if (winver::is_windows_11()) core().log("Any miniaudio WASAPI warning messages on the next line can probably be ignored.");
-
-    // Load the degauss sound from the game data.
-    degauss_sound_ = std::make_unique<OggSound>("crt-degauss");
 
     // Define the desired OpenGL context settings.
     sf::ContextSettings gl_settings;
@@ -101,7 +92,6 @@ Terminal::~Terminal()
         window_stack_.at(i).reset(nullptr);
     previous_frame_.reset(nullptr);
     current_frame_.reset(nullptr);
-    degauss_sound_.reset(nullptr);
 }
 
 // Adds a new Window to the stack. This is called automatically from Window's constructor.
@@ -400,11 +390,6 @@ void Terminal::recreate_frames()
 
     shader_.setUniform("tex", current_frame_->getTexture());
     shader_.setUniform("textureSize", sf::Vector2f(current_frame_->getSize()));
-
-    static bool first_degauss = true;
-    degauss_sound_->play();
-    if (!first_degauss) degauss_sound_->set_playing_offset(sf::milliseconds(550));
-    first_degauss = false;
 
     for (int i = 0; i < 16; i++)
         flip(false);

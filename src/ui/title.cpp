@@ -5,8 +5,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "cmake/version.hpp"
-#include "core/audio/oggmusic.hpp"
-#include "core/audio/oggsound.hpp"
 #include "core/core.hpp"
 #include "core/game.hpp"
 #include "core/terminal/terminal.hpp"
@@ -20,7 +18,7 @@
 namespace gorp {
 
 // Simple constructor, sets things up.
-TitleScreen::TitleScreen() : blinking_(false), floppy_played_(false), floppy_sound_(nullptr), music_(nullptr), title_screen_window_(nullptr)
+TitleScreen::TitleScreen() : blinking_(false), floppy_played_(false), title_screen_window_(nullptr)
 {
     YAML title_data(core().datafile("misc/title.yml"));
     if (!title_data.is_map()) throw GuruMeditation("misc/title/yml: Invalid file format");
@@ -33,50 +31,22 @@ TitleScreen::TitleScreen() : blinking_(false), floppy_played_(false), floppy_sou
     backronym_ = g_words.at(random::get<int>(0, g_words.size() - 1)) + " of " + r_words.at(random::get<int>(0, r_words.size() - 1)) + " " +
         p_words.at(random::get<int>(0, p_words.size() - 1));
     phrase_ = phrases.at(random::get<int>(0, phrases.size() - 1));
-
-    // Load the title-screen music.
-    music_ = std::make_unique<OggMusic>("march");
-    music_->set_volume(75.0f);
-    music_->set_looping(true);
-
-    // Load the floppy-disk loading sound.
-    floppy_sound_ = std::make_unique<OggSound>("floppy-disk");
 }
 
 // Destructor, cleans up used memory.
-TitleScreen::~TitleScreen()
-{
-    if (title_screen_window_) terminal().remove_window(title_screen_window_);
-    if (music_)
-    {
-        music_->stop();
-        music_.reset(nullptr);
-    }
-    floppy_sound_.reset(nullptr);
-}
+TitleScreen::~TitleScreen() { if (title_screen_window_) terminal().remove_window(title_screen_window_); }
 
 // Renders the title screen, and returns the user's chosen action.
 TitleScreen::TitleOption TitleScreen::render()
 {
     Terminal &term = terminal();
-    sf::Clock audio_timer, blink_timer;
-    bool music_started = false;
+    sf::Clock blink_timer;
     int next_blink = random::get<int>(2000, 10000);
     redraw();
 
     int result;
     while(true)
     {
-        if (!floppy_played_ && audio_timer.getElapsedTime().asMilliseconds() > 800)
-        {
-            floppy_played_ = true;
-            floppy_sound_->play();
-        }
-        if (!music_started && audio_timer.getElapsedTime().asMilliseconds() > 4200)
-        {
-            music_->play();
-            music_started = true;
-        }
         if (blinking_ && blink_timer.getElapsedTime().asMilliseconds() > 200)
         {
             blink_timer.restart();

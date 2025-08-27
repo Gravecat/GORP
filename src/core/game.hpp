@@ -33,11 +33,11 @@ private:
     void    clear_elements();   // Clears all UI elements.
     void    new_game();         // Sets up for a new game!
 
-    std::unique_ptr<Codex>          codex_ptr_;         // The Codex object, which stores all the static game data in memory, and generates copies of said data.
-    std::vector<std::unique_ptr<Element>>   ui_elements_;       // The UI elements on screen right now.
-    uint32_t                        ui_element_id_counter_;     // The counter for generating unique UI element IDs.
-    uint32_t                        ui_input_;          // The vector ID of the Input stored in ui_elements_.
-    uint32_t                        ui_msglog_;         // The vector ID of the MessageLog stored in ui_elements_.
+    std::unique_ptr<Codex>  codex_ptr_; // The Codex object, which stores all the static game data in memory, and generates copies of said data.
+    std::vector<std::unique_ptr<Element>>   ui_elements_;   // The UI elements on screen right now.
+    uint32_t    ui_element_id_counter_; // The counter for generating unique UI element IDs.
+    uint32_t    ui_input_;  // The vector ID of the Input stored in ui_elements_.
+    uint32_t    ui_msglog_; // The vector ID of the MessageLog stored in ui_elements_.
 };
 
 Game&   game(); // A shortcut instead of using core().game()

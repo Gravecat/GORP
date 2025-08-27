@@ -13,7 +13,6 @@
 
 namespace gorp {
 
-class OggSound;         // defined in core/audio/oggsound.hpp
 class Window;           // defined in core/terminal/window.hpp
 
 class Terminal {
@@ -44,7 +43,6 @@ private:
     void        recreate_frames();  // Recreates the frame textures, after the window has resized.
 
     std::unique_ptr<sf::RenderTexture>  current_frame_, previous_frame_; // This is where we render updates to the screen, before applying the shader.
-    std::unique_ptr<OggSound>   degauss_sound_; // The CRT degauss sound effect.
     sf::RenderWindow            main_window_;   // The main render window.
     sf::Shader                  shader_;        // The CRT shader.
     uint32_t                    sprite_max_;    // The maximim valid ID for a sprite on the sprite sheet.
