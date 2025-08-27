@@ -17,7 +17,7 @@
 namespace gorp {
 
 // Simple constructor, sets things up.
-TitleScreen::TitleScreen() : blinking_(false), floppy_played_(false), title_screen_window_(nullptr)
+TitleScreen::TitleScreen() : blinking_(false), title_screen_window_(nullptr)
 {
     YAML title_data(core().datafile("misc/title.yml"));
     if (!title_data.is_map()) throw GuruMeditation("misc/title/yml: Invalid file format");
