@@ -1,8 +1,4 @@
-# .gitignore
-#
 # Pretty basic stuff, just blocking temporary files, binary objects, and other junk that may show up in the folder but doesn't belong in the repo.
-#
-# No licensing for this file, it's super basic stuff. Do with it as you will.
 
 # Unwanted temporary files.
 ~$*
