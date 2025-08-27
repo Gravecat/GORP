@@ -173,6 +173,7 @@ void Game::new_game()
 // Processes input from the player.
 void Game::process_input(const std::string &input)
 {
+    log().message("");
     log().message("{G}> " + input);
     log().message("");
 }
