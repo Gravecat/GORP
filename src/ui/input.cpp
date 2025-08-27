@@ -27,6 +27,7 @@ bool Input::process_input(int key)
     if (alphanumeric)
     {
         if (input_.size() >= MAX_INPUT_LENGTH) sfxr().play_sound("fail");
+        else if (key == ' ' && input_.at(input_.size() - 1) == ' ') return false;
         else input_ += static_cast<char>(key);
         return true;
     }
@@ -39,7 +40,8 @@ bool Input::process_input(int key)
         case Key::ENTER:
             if (input_.size() > 2)
             {
-                game().process_input(input_.substr(2));
+                if (input_.at(input_.size() - 1) == ' ') game().process_input(input_.substr(2, input_.size() - 3));
+                else game().process_input(input_.substr(2));
                 input_ = "> ";
             }
             else sfxr().play_sound("fail");
