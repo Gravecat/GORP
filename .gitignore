@@ -11,20 +11,23 @@
 # Unfortunate artefacts that can arise from using WSL on Windows.
 *:Zone.Identifier
 
-# Binaries created by the build process, or other bits used for temporary testing.
+# Binaries created by the build process, or libraries used in the build.
 *.a
 *.dll
 *.exe
-*.lnk
 *.o
-build/**
-build-*/**
-*-build/**
-!build/.do-not-delete-me
+
+# Files used for testing.
+*.lnk
 log.txt
 
 # Visual Studio Code settings, which aren't relevant to the repo.
 .vscode/**
+
+# Build folders.
+build/**
+build-*/**
+*-build/**
 
 # SFML headers need to be included manually.
 src/3rdparty/sfml/include/**
