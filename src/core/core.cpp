@@ -238,3 +238,9 @@ int main(int argc, char** argv)
     core().destroy_core(EXIT_SUCCESS);
     return EXIT_SUCCESS;    // Technically not needed, as destroy_core() calls exit(), but this'll keep the compiler happy.
 }
+
+// Symbols to encourage the use of a discrete GPU, when running on a multi-GPU machine.
+#ifdef GORP_TARGET_WINDOWS
+unsigned long NvOptimusEnablement                  = 1;
+unsigned long AmdPowerXpressRequestHighPerformance = 1;
+#endif

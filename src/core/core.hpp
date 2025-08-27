@@ -54,3 +54,9 @@ private:
 Core&   core(); // A shortcut to using Core::core().
 
 }   // namespace gorp
+
+// Symbols to encourage the use of a discrete GPU, when running on a multi-GPU machine.
+#ifdef GORP_TARGET_WINDOWS
+extern "C" __declspec(dllexport) unsigned long NvOptimusEnablement;
+extern "C" __declspec(dllexport) unsigned long AmdPowerXpressRequestHighPerformance;
+#endif
