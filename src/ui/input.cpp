@@ -35,7 +35,6 @@ bool Input::process_input(int key)
     {
         case Key::BACKSPACE:
             if (input_.size() > 2) input_ = input_.substr(0, input_.size() - 1);
-            else sfxr().play_sound("fail");
             return true;
         case Key::ENTER:
             if (input_.size() > 2)
@@ -44,7 +43,6 @@ bool Input::process_input(int key)
                 else game().process_input(input_.substr(2));
                 input_ = "> ";
             }
-            else sfxr().play_sound("fail");
             return true;
         default: return false;
     }

@@ -45,7 +45,6 @@ bool MessageLog::process_input(int key)
                 else offset_ -= scroll_amount;
                 needs_redraw(true);
             }
-            else sfxr().play_sound("fail");
             return true;
         case Key::ARROW_UP:
         case Key::PAGE_UP:
@@ -58,7 +57,6 @@ bool MessageLog::process_input(int key)
                 else offset_ += scroll_amount;
                 needs_redraw(true);
             }
-            else sfxr().play_sound("fail");
             return true;
     }
     return false;
