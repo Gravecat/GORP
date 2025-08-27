@@ -172,9 +172,9 @@ target_include_directories(gorp PRIVATE
 
 # Platform-specific library directories.
 if(TARGET_WINDOWS)
-  target_link_directories(gorp PRIVATE "${CMAKE_SOURCE_DIR}/windows/lib")
+  target_link_directories(gorp PRIVATE "${CMAKE_SOURCE_DIR}/lib/windows")
 elseif(TARGET_LINUX)
-  target_link_directories(gorp PRIVATE "${CMAKE_SOURCE_DIR}/linux/lib")
+  target_link_directories(gorp PRIVATE "${CMAKE_SOURCE_DIR}/lib/linux")
 endif()
 
 # Link libraries. Platform-specific stuff should be set in the main platform-specific section near the top.
