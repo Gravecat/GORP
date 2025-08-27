@@ -85,10 +85,7 @@ Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), degaus
     main_window_.setIcon(window_icon);
 
     // Load the GLSL shader from the data files.
-    std::vector<char> fragment_shader = fileutils::file_to_char_vec(core().datafile("misc/shader.glsl"));
-    fragment_shader.push_back(0);   // C-style strings expect a null byte terminator.
-    std::string_view fragment_sv(fragment_shader.data());
-    if (!shader_.loadFromMemory(fragment_sv, sf::Shader::Type::Fragment)) throw std::runtime_error("Could not load GLSL shader!");
+    if (!shader_.loadFromFile(core().datafile("misc/shader.glsl"), sf::Shader::Type::Fragment)) throw std::runtime_error("Could not load GLSL shader!");
     shader_.setUniform("tex", current_frame_->getTexture());
     shader_.setUniform("textureSize", sf::Vector2f(current_frame_->getSize()));
 
