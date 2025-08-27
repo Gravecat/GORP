@@ -85,21 +85,12 @@ Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), degaus
     main_window_.setIcon(window_icon);
 
     // Load the GLSL shader from the data files.
-    std::vector<char> fragment_shader = fileutils::file_to_char_vec(core().datafile("shader/shader.glsl"));
+    std::vector<char> fragment_shader = fileutils::file_to_char_vec(core().datafile("misc/shader.glsl"));
     fragment_shader.push_back(0);   // C-style strings expect a null byte terminator.
     std::string_view fragment_sv(fragment_shader.data());
     if (!shader_.loadFromMemory(fragment_sv, sf::Shader::Type::Fragment)) throw std::runtime_error("Could not load GLSL shader!");
-
-    // Load shader parameters, and set them as needed.
-    YAML yaml_file(core().datafile("shader/uniforms.yml"));
-    if (!yaml_file.is_map()) throw GuruMeditation("Invalid file format: shader/uniforms.yml");
-    std::vector<std::string> children = yaml_file.keys();
-    for (auto key : children)
-        shader_.setUniform(key.c_str(), std::stof(yaml_file.val(key)));
     shader_.setUniform("tex", current_frame_->getTexture());
     shader_.setUniform("textureSize", sf::Vector2f(current_frame_->getSize()));
-    shader_.setUniform("crtGeometry", SHADER_CRT_GEOM);
-    shader_.setUniform("bezelRender", SHADER_BEZEL_RENDER);
 
     core().log("SFML initialized successfully.");
     load_sprites();

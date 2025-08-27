@@ -35,7 +35,6 @@ public:
 private:
     // Just used for shader testing and tweaking, leave these along.
     static constexpr bool SHADER_BEZEL_RENDER = false;
-    static constexpr bool SHADER_CRT_GEOM =     true;
 
     // Internal rendering code, called by Window::print() and Window::put(), with the complex part handled by Terminal.
     void        print(sf::RenderTexture &tex, std::string str, Vector2 pos, Colour colour, Font font = Font::NORMAL);

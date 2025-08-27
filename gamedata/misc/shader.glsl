@@ -1,4 +1,4 @@
-// shader/shader.glsl -- GLSL shader for applying an exaggerated CRT filter effect to the game window.
+// misc/shader.glsl -- GLSL shader for applying an exaggerated CRT filter effect to the game window.
 
 // SPDX-FileType: SOURCE
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
@@ -10,40 +10,34 @@ uniform sampler2D tex;
 uniform vec2 textureSize;
 uniform float time;
 
-uniform float bloomIntensity;
-uniform float bloomSpread;
-uniform float chromaticAberration;
-uniform float colorBleedAmount;
-uniform float curvature;
-uniform float edgeBlurSize;
-uniform float edgeEnd;
-uniform float edgeStart;
-uniform float flickerAmount;
-uniform float flickerSpeed;
-uniform float glitchFrequency;
-uniform float glitchMaxIntensity;
-uniform float glitchMaxSize;
-uniform float glitchMinIntensity;
-uniform float glitchMinSize;
-uniform float jitterIntensity;
-uniform float jitterSpeed;
-uniform float noiseAmount;
-uniform float phosphorIntensity;
-uniform float phosphorScale;
-uniform float rollIntensity;
-uniform float rollSpeed;
-uniform float scanlineCount;
-uniform float scanlineDriftAmount;
-uniform float scanlineDriftSpeed;
-uniform float scanlineIntensity;
-uniform float vignetteIntensity;
-
-uniform bool bezelRender;
-uniform bool crtGeometry;
+uniform float bloomIntensity = 0.7;
+uniform float bloomSpread = 2.0;
+uniform float chromaticAberration = 0.8;
+uniform float colorBleedAmount = 0.2;
+uniform float curvature = 6.0;
+uniform float flickerAmount = 0.03;
+uniform float flickerSpeed = 3.0;
+uniform float glitchFrequency = 0.002;
+uniform float glitchMaxIntensity = 0.005;
+uniform float glitchMaxSize = 1.0;
+uniform float glitchMinIntensity = -0.005;
+uniform float glitchMinSize = 1.0;
+uniform float jitterIntensity = 0.0003;
+uniform float jitterSpeed = 0.5;
+uniform float noiseAmount = 0.015;
+uniform float phosphorIntensity = 0.15;
+uniform float phosphorScale = 1.5;
+uniform float rollIntensity = 0.002;
+uniform float rollSpeed = 0.01;
+uniform float scanlineCount = 200.0;
+uniform float scanlineDriftAmount = 0.05;
+uniform float scanlineDriftSpeed = 0.1;
+uniform float scanlineIntensity = 0.2;
+uniform float vignetteIntensity = 0.23;
 
 out vec4 fragColor;
 
-precision highp float;
+precision lowp float;
 
 float random(vec2 st) {
     return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
@@ -70,8 +64,6 @@ vec2 getDistortedUV(vec2 uv) {
 }
 
 vec2 curveRemapUV(vec2 uv) {
-    if (!crtGeometry) return uv;
-
     uv = uv * 2.0 - 1.0;
     vec2 offset = abs(uv.yx) / vec2(curvature);
     uv = uv + uv * offset * offset;
@@ -91,51 +83,6 @@ vec4 getBloom(vec2 texCoord) {
     }
 
     return sum / float((samples * 2 + 1) * (samples * 2 + 1));
-}
-
-vec4 getBezelColor(vec2 uv, vec2 texCoord) {
-    vec2 centered = (uv - 0.5) * 2.0;
-    float dist = length(centered);
-
-    // Base bezel color
-    vec3 color = vec3(0.4, 0.35, 0.3);
-
-    // Edge gradient
-    float edgeGradient = smoothstep(0.8, 1.0, dist);
-    color *= (1.0 - edgeGradient);
-
-    // Highlight
-    float highlight = smoothstep(0.7, -0.2, centered.y) * 0.3;
-    color += vec3(highlight);
-
-    // Edge darkening
-    float edge = smoothstep(0.7, 1.0, dist) * 0.5;
-    color = mix(color, vec3(0.1), edge);
-
-    // Pattern
-    float pattern = mod(uv.x * 50.0 + uv.y * 50.0, 1.0) > 0.5 ? 0.02 : 0.0;
-    color += vec3(pattern);
-
-    // Darken the bottom half AFTER all other calculations
-    float darkenAmount = smoothstep(0.5, -0.5, centered.y) * 0.6;
-    color = mix(color, color * (1.0 - darkenAmount), smoothstep(0.2, -0.2, centered.y));
-
-    // Mask the bezel
-    float bezelMask = smoothstep(0.7, 0.9, dist);
-    return vec4(color, bezelMask);
-}
-
-float getScreenEdgeFade(vec2 uv) {
-    vec2 centered = uv * 2.0 - 1.0;
-
-    vec2 offset = abs(centered.yx) / vec2(curvature);
-    vec2 curvedPos = centered + centered * offset * offset;
-
-    vec2 edgeDist = abs(curvedPos);
-    float fadeX = smoothstep(edgeStart, edgeEnd * 0.95, edgeDist.x);
-    float fadeY = smoothstep(edgeStart, edgeEnd * 0.95, edgeDist.y);
-
-    return max(fadeX, fadeY);
 }
 
 float getVignette(vec2 uv) {
@@ -185,17 +132,6 @@ void main() {
     vec2 originalUV = gl_TexCoord[0].xy;
     vec2 texCoordRemapped = curveRemapUV(originalUV);
 
-    if (bezelRender)
-    {
-        vec4 bezelColor = getBezelColor(originalUV, texCoordRemapped);
-
-        if (texCoordRemapped.x < 0.03 || texCoordRemapped.x > 0.97 || 
-            texCoordRemapped.y < 0.03 || texCoordRemapped.y > 0.97) {
-            fragColor = bezelColor;
-            return;
-        }
-    }
-
     vec2 distortedTexCoord = getDistortedUV(texCoordRemapped);
 
     if (distortedTexCoord.x < 0.0 || distortedTexCoord.x > 1.0 || 
@@ -231,16 +167,13 @@ void main() {
     float scanline = sin(scanlinePos * scanlineCount * 3.14159);
     scanline = (1.0 - scanlineIntensity) + scanlineIntensity * scanline;
 
-    float edgeFade = 0.0;
-    if (bezelRender) edgeFade = getScreenEdgeFade(texCoordRemapped);
-
     vec4 finalColor = pixel;
 
     // Apply phosphor mask
     finalColor.rgb *= getPhosphorMask(distortedTexCoord);
 
     // Apply scanline
-    finalColor *= vec4(vec3(scanline * (1.0 - edgeFade)), 1.0);
+    finalColor *= vec4(vec3(scanline), 1.0);
 
     // Apply vignette
     finalColor.rgb *= getVignette(texCoordRemapped);
@@ -253,7 +186,5 @@ void main() {
     float noise = getNoise(distortedTexCoord) * noiseAmount;
     finalColor.rgb += noise;
 
-    //float screenEdgeBlend = smoothstep(0.95, 1.0, max(abs(texCoordRemapped.x - 0.5) * 2.0, abs(texCoordRemapped.y - 0.5) * 2.0));
-    //fragColor = mix(finalColor, bezelColor, screenEdgeBlend);
     fragColor = finalColor;
 }
