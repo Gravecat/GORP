@@ -38,6 +38,8 @@ public:
     void            destroy_core(int exit_code);    // Destroys the singleton Core object and ends execution.
 
 private:
+    static constexpr int    GORP_GAMEDATA_VERSION = 2;  // The expected version for the gamedata folder.
+
             Core();             // Constructor, sets up the Core object.
     void    cleanup();          // Attempts to gracefully clean up memory and subsystems.
     void    find_gamedata();    // Attempts to locate the gamedata folder.

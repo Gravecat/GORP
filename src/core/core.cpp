@@ -90,9 +90,8 @@ void Core::find_gamedata()
 
     YAML yaml_file(datafile("gorp.yml"));
     if (!yaml_file.is_map() || !yaml_file.key_exists("gorp_gamedata_version")) throw GuruMeditation("gorp.yml: Invalid file format!");
-    constexpr int expected_version = 1;
     const int data_version = std::stoi(yaml_file.val("gorp_gamedata_version"));
-    if (data_version != expected_version) guru_ptr_->halt("Unexpected gamedata version!", expected_version, data_version);
+    if (data_version != GORP_GAMEDATA_VERSION) guru_ptr_->halt("Unexpected gamedata version!", GORP_GAMEDATA_VERSION, data_version);
 }
 
 // Returns a reference to the Game manager object.
