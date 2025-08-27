@@ -6,8 +6,9 @@
 
 #pragma once
 
+#include <SFML/Graphics/RenderTexture.hpp>
+
 #include "core/global.hpp"
-#include "SFML/Graphics/RenderTexture.hpp"
 
 namespace gorp {
 

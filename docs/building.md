@@ -3,13 +3,13 @@
 ## Important Note!
 
 This is very early days for this project. Long-term, I plan on adjusting the CMake build files to accomodate many compilers. Right now, it only has full
-support for GCC (either on Linux, or cross-compiling to Windows with MinGW) and has not been tested on Visual Studio or other toolchains.
+support for GCC (either on Linux, or cross-compiling to Windows with MinGW) and has not been tested on Visual Studio or other toolchains. Please see
+[here](https://github.com/Gravecat/gorp/issues/1) for more information on MSVC, and [here](https://github.com/Gravecat/gorp/issues/2) for more on MacOS.
 
 ## Compiling SFML
 
-GORP requires the headers and compiled static library files (.a or .lib) for [SFML 3](https://github.com/SFML/SFML). However you choose to acquire these files,
-you should place the `include` folder in the `src/3rdparty/sfml` folder of the GORP repo, and the library files (.a or .lib) in either `lib/linux` or
-`lib/windows` (depending on your target platform).
+GORP requires the compiled static library files (.a or .lib, *not* .so) for [SFML 3](https://github.com/SFML/SFML). You should place these files in either
+`lib/linux` or `lib/windows` (depending on your target platform).
 
 ## Compiling GORP
 

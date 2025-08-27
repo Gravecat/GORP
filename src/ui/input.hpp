@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <SFML/System.hpp>
+#include <SFML/System/Clock.hpp>
 
 #include "core/global.hpp"
 #include "ui/element.hpp"

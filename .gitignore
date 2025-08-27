@@ -24,6 +24,3 @@ log.txt
 build/**
 build-*/**
 *-build/**
-
-# SFML headers need to be included manually.
-src/3rdparty/sfml/include/**

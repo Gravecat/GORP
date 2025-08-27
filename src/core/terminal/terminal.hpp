@@ -6,10 +6,12 @@
 
 #pragma once
 
-#include "core/global.hpp"
-#include "SFML/Graphics.hpp"
-
 #include <map>
+#include <SFML/Graphics/RenderTexture.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Shader.hpp>
+
+#include "core/global.hpp"
 
 namespace gorp {
 

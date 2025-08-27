@@ -7,7 +7,7 @@
 #include <csignal>
 #include <cstdlib>  // EXIT_FAILURE
 #include <iostream>
-#include <SFML/System.hpp>
+#include <SFML/System/Err.hpp>
 
 #include "cmake/version.hpp"
 #include "core/core.hpp"

@@ -163,7 +163,7 @@ endif(TARGET_WINDOWS)
 # Include directories.
 target_include_directories(gorp PRIVATE
   "${CMAKE_SOURCE_DIR}/src"
-  "${CMAKE_SOURCE_DIR}/src/3rdparty/sfml/include"
+  "${CMAKE_SOURCE_DIR}/src/3rdparty"
   "${CMAKE_CURRENT_BINARY_DIR}"
 )
 

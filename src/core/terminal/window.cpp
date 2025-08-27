@@ -4,6 +4,8 @@
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include <SFML/Graphics/RectangleShape.hpp>
+
 #include "core/prefs.hpp"
 #include "core/terminal/colour-maps.hpp"
 #include "core/terminal/terminal.hpp"

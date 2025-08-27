@@ -6,7 +6,7 @@
 
 #include <cstdlib>  // EXIT_SUCCESS, EXIT_FAILURE, std::getenv
 #include <iostream>
-#include <SFML/System.hpp>
+//#include <SFML/System.hpp>
 
 #ifdef GORP_TARGET_WINDOWS
 #include <windows.h>

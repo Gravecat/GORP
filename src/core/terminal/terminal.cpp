@@ -6,6 +6,8 @@
 
 #include <cmath>
 #include <cstdlib>  // EXIT_SUCCESS
+#include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <string_view>
 
 #ifdef GORP_TARGET_WINDOWS

@@ -7,9 +7,11 @@
 *.glsl text linguist-language=GLSL
 *.hpp text linguist-language=C++
 *.hpp.in text linguist-language=C++
-*.ico binary linguist-vendored
+*.ico binary
 *.md text
 *.rc.in text
 *.txt text
 *.yml text linguist-detectable=true linguist-language=YAML
 CMakeLists.txt text linguist-language=CMake
+
+src/3rdparty/SFML/** linguist-vendored
