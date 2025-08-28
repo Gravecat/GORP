@@ -11,7 +11,7 @@
 namespace gorp {
 namespace mathutils {
 
-uint32_t    array_index(Vector2 position, Vector2 array_size);  // Takes X,Y coordinates, and returns a flat array index for the coordinates.
+uint32_t    array_index(Vector2u position, Vector2u array_size);  // Takes X,Y coordinates, and returns a flat array index for the coordinates.
 
 }   // namespace mathutils
 }   // namespace gorp
