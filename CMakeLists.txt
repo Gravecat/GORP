@@ -142,6 +142,7 @@ set(GORP_CPPS
   src/util/file/fileutils.cpp
   src/util/file/filewriter.cpp
   src/util/file/yaml.cpp
+  src/util/math/mathutils.cpp
   src/util/system/process.cpp
   src/util/text/namegen.cpp
   src/util/text/stringutils.cpp
