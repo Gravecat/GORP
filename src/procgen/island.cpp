@@ -5,17 +5,28 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "3rdparty/PerlinNoise/PerlinNoise.hpp"
+#include "core/game.hpp"
 #include "procgen/island.hpp"
+#include "ui/dev-canvas.hpp"
 #include "util/math/mathutils.hpp"
 #include "util/math/random.hpp"
 
 namespace gorp {
 
 // Generates a new island of the specified size.
-IslandProcGen::IslandProcGen(uint16_t size, uint32_t seed) : seed_(seed), size_(size)
+IslandProcGen::IslandProcGen(uint16_t size, uint32_t seed) : canvas_id_(0), seed_(seed), size_(size)
 {
     if (!seed) seed_ = random::get<uint32_t>(UINT_MAX);
     if (size < ISLAND_SIZE_MIN || size > ISLAND_SIZE_MAX) throw GuruMeditation("Invalid island size!", size, ISLAND_SIZE_MAX);
+
+    // This should only be used for testing and development, never for normal gameplay!
+    DevCanvas* canvas_ptr = nullptr;
+    if (GENERATE_DEV_MAPS)
+    {
+        canvas_id_ = game().add_element(std::make_unique<DevCanvas>(Vector2u(size_, size_)));
+        DevCanvas& canvas_ref = static_cast<DevCanvas&>(game().element(canvas_id_));
+        canvas_ptr = &canvas_ref;
+    }
 
     // First, we need to determine the height-map for the island. We'll do this with Perlin noise, then adjust it to allow for a coast.
     std::vector<float> height_map(size * size);
@@ -24,10 +35,25 @@ IslandProcGen::IslandProcGen(uint16_t size, uint32_t seed) : seed_(seed), size_(
     {
         for (unsigned int y = 0; y < size; y++)
         {
-            const float noise = perlin.octave2D_01((x * 0.01), (y * 0.01), 4);
+            const float noise = perlin.octave2D_01((x * 0.10), (y * 0.10), 4);
             height_map.at(mathutils::array_index({x, y}, {size, size})) = noise;
+
+            if (GENERATE_DEV_MAPS)
+            {
+                Colour col = Colour::GREEN;
+                if (noise <= 0.1f) col = Colour::BLUE_DARK;
+                else if (noise <= 0.2f) col = Colour::BLUE;
+                else if (noise <= 0.3f) col = Colour::GREEN_LIGHT;
+                else if (noise >= 0.8f) col = Colour::WHITE;
+                else if (noise >= 0.7f) col = Colour::GRAY;
+                else if (noise >= 0.6f) col = Colour::GREEN_DARK;
+                canvas_ptr->put(Glyph::FULL_BLOCK, Vector2(x, y), col);
+            }
         }
     }
 }
+
+// Destructor, cleans up after ourselves.
+IslandProcGen::~IslandProcGen() { if (canvas_id_) game().delete_element(canvas_id_); }
 
 }   // namespace gorp

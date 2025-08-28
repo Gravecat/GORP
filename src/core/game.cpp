@@ -16,7 +16,7 @@
 #include "util/math/random.hpp"
 #include "world/codex.hpp"
 
-#include "ui/dev-canvas.hpp"    // temp
+#include "procgen/island.hpp"   // temp
 
 namespace gorp {
 
@@ -127,10 +127,7 @@ void Game::main_loop()
     msg("{G}In augue nulla, imperdiet eu faucibus vel, cursus elementum felis. Curabitur lacus ligula, pellentesque sit amet libero sit amet, tempor interdum justo. Duis eleifend nunc eu urna fringilla, eu molestie ipsum commodo. Suspendisse in purus dui. In hendrerit orci leo, quis consequat mi aliquet sit amet. Mauris neque risus, tempus sed nisi ac, varius accumsan erat. Pellentesque sagittis nulla ipsum, sed tristique erat fringilla at. Vestibulum ipsum sem, feugiat at congue sit amet, venenatis in arcu. Maecenas vel mi a est mollis accumsan. Mauris convallis justo interdum, pretium ligula ut, posuere tortor. Aenean sollicitudin sem ac auctor rhoncus. ");
 
     // Temp testing code
-    uint32_t canvas = add_element(std::make_unique<DevCanvas>(Vector2u(10, 4)));
-    DevCanvas canvas_ptr = static_cast<DevCanvas&>(element(canvas));
-    canvas_ptr.clear(Colour::BLUE_LIGHT);
-    canvas_ptr.print("Meow test", {1, 2}, Colour::BLUE_DARK);
+    auto ipg = std::make_unique<IslandProcGen>(64, 12345u);
 
     int key = 0;
     while(true)
