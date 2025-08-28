@@ -17,12 +17,24 @@ DevCanvas::DevCanvas(Vector2u size) : Element(), size_(size)
     if (!size.x || !size.y) throw GuruMeditation("Invalid DevCanvas size", size.x, size.y);
 }
 
-// (Re)creates the render window for this UI element.
+// Clears the canvas entirely.
+void DevCanvas::clear()
+{
+    window_->clear();
+    needs_redraw();
+}
+
+// (Re)creates the render window for this canvas.
 void DevCanvas::recreate_window()
 {
-    Terminal &term = terminal();
-    if (window_) term.remove_window(window_);
-    window_ = term.add_window(size_);
+    // We're breaking protocol here. In order to keep this canvas intact, we're not gonna delete and recreate it.
+    // Instead, we'll just push it to the top of the stack.
+    if (!window_)
+    {
+        window_ = terminal().add_window(size_);
+        window_->clear();
+    }
+    else terminal().window_to_front(window_);
 }
 
 }   // namespace gorp

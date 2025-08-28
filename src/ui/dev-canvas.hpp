@@ -18,7 +18,8 @@ public:
             DevCanvas() = delete;       // No default constructor; must specify window size.
             DevCanvas(bool) = delete;   // Bool constructor from Element is also deleted.
             DevCanvas(Vector2u size);   // Creates a new DevCanvas of the specified size, in tiles.
-    void    recreate_window() override; // (Re)creates the render window for this UI element.
+    void    clear();                    // Clears the canvas entirely.
+    void    recreate_window() override; // (Re)creates the render window for this canvas.
 
 private:
     Vector2u    size_;  // The size of this canvas.
