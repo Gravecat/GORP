@@ -6,6 +6,9 @@ on:
       - main
       - indev
 
+permissions:
+  contents: read
+
 env:
   GH_TOKEN: ${{ github.token }}
 
