@@ -133,6 +133,7 @@ set(GORP_CPPS
   src/core/terminal/colour-maps.cpp
   src/core/terminal/terminal.cpp
   src/core/terminal/window.cpp
+  src/procgen/island.cpp
   src/ui/element.cpp
   src/ui/input.cpp
   src/ui/messagelog.cpp
