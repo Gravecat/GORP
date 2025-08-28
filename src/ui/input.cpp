@@ -50,9 +50,9 @@ bool Input::process_input(int key)
 void Input::recreate_window()
 {
     Terminal &term = terminal();
-    const Vector2 term_size = term.size();
+    const Vector2u term_size = term.size();
     if (window_) term.remove_window(window_);
-    window_ = term.add_window(Vector2(std::max(5, term_size.x), 3), Vector2(0, term_size.y - 3));
+    window_ = term.add_window(Vector2u(std::max(5u, term_size.x), 3), Vector2(0, term_size.y - 3));
 }
 
 // Renders the input window.

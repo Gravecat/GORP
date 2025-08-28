@@ -78,11 +78,11 @@ void TitleScreen::redraw()
     Terminal &term = terminal();
     if (title_screen_window_) term.remove_window(title_screen_window_);
 #if defined(GORP_BUILD_DEBUG)
-    const int title_height = 29;
+    const unsigned int title_height = 29;
 #else
-    const int title_height = 27;
+    const unsigned int title_height = 27;
 #endif
-    title_screen_window_ = term.add_window(Vector2(43, title_height));
+    title_screen_window_ = term.add_window({43, title_height});
     title_screen_window_->clear();
 
     title_screen_window_->print(phrase_, {5, 0}, Colour::GRAY_DARK, Font::TRIHOOK_HALF);
@@ -139,15 +139,15 @@ void TitleScreen::render_test()
 {
     Terminal &term = terminal();
     sf::Clock clock;
-    Vector2 screen_size = term.size();
+    Vector2u screen_size = term.size();
     term.set_frame_limit(false);
     int frame_count = 0;
     while (clock.getElapsedTime().asSeconds() < 10)
     {
         title_screen_window_->clear();
-        for (int x = 0; x < screen_size.x; x++)
-            for (int y = 0; y < screen_size.y; y++)
-                title_screen_window_->put(random::get<int>(0, 255), {x, y}, static_cast<Colour>(random::get<int>(1, 25)));
+        for (unsigned int x = 0; x < screen_size.x; x++)
+            for (unsigned int y = 0; y < screen_size.y; y++)
+                title_screen_window_->put(random::get<int>(0, 255), Vector2(x, y), static_cast<Colour>(random::get<int>(1, 25)));
         term.get_key();
         frame_count++;
     }

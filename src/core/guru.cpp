@@ -122,8 +122,8 @@ void Guru::halt(std::string error, int a, int b)
     Terminal& term = terminal();
     int window_size = 37;
     if (error.size() >= 37) window_size = error.size();
-    const auto guru_window = term.add_window(Vector2(window_size + 2, (meditation_str.empty() ? 5 : 7)));
-    const Vector2 window_mid = guru_window->get_middle();
+    const auto guru_window = term.add_window(Vector2u(window_size + 2, (meditation_str.empty() ? 5 : 7)));
+    const Vector2u window_mid = guru_window->get_middle();
 
     sf::Clock blink_timer;
     while (true)
@@ -132,15 +132,15 @@ void Guru::halt(std::string error, int a, int b)
         {
             guru_window->clear();
             if (border) guru_window->box(Colour::RED);
-            guru_window->print("Software Failure, Halting Execution", {window_mid.x - 17, 1}, Colour::RED);
+            guru_window->print("Software Failure, Halting Execution", Vector2(window_mid.x - 17, 1), Colour::RED);
             guru_window->print(error, Vector2(window_mid.x - (error.size() / 2), 3), Colour::RED);
             if (!meditation_str.empty()) guru_window->print(meditation_str, Vector2(window_mid.x - (meditation_str.size() / 2), 5), Colour::RED);
             needs_redraw = false;
         }
         if (resized)
         {
-            const Vector2 term_mid = term.get_middle();
-            guru_window->move({term_mid.x - window_mid.x, term_mid.y - window_mid.y});
+            const Vector2u term_mid = term.get_middle();
+            guru_window->move(Vector2(term_mid.x - window_mid.x, term_mid.y - window_mid.y));
             resized = false;
         }
         if (term.get_key() == Key::RESIZE) resized = true;

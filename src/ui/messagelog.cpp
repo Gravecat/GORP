@@ -82,9 +82,9 @@ void MessageLog::recreate_window()
 {
     offset_ = 0;
     Terminal &term = terminal();
-    const Vector2 term_size = term.size();
+    const Vector2u term_size = term.size();
     if (window_) term.remove_window(window_);
-    window_ = term.add_window(Vector2(std::max(5, term_size.x), std::max(3, term_size.y - 2)), Vector2(0, 0));
+    window_ = term.add_window(Vector2u(std::max(5u, term_size.x), std::max(3u, term_size.y - 2)), {0, 0});
     process_messages();
 }
 

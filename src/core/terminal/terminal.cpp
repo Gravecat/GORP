@@ -44,7 +44,7 @@ Terminal::Terminal() : current_frame_(nullptr), previous_frame_(nullptr), sprite
     gl_settings.attributeFlags = sf::ContextSettings::Default;
 
     sf::Vector2u window_size(800, 600);
-    window_pixels_ = Vector2(window_size.x, window_size.y);
+    window_pixels_ = Vector2u(window_size.x, window_size.y);
 
     main_window_.create(sf::VideoMode(window_size), ("GORP " + version::VERSION_STRING).c_str(), sf::State::Windowed, gl_settings);
     sf::ContextSettings actual_settings = main_window_.getSettings();
@@ -97,7 +97,7 @@ Terminal::~Terminal()
 }
 
 // Adds a new Window to the stack. This is called automatically from Window's constructor.
-Window* Terminal::add_window(Vector2 new_size, Vector2 new_pos) {
+Window* Terminal::add_window(Vector2u new_size, Vector2 new_pos) {
     window_stack_.push_back(std::make_unique<Window>(new_size, new_pos));
     return window_stack_.back().get();
 }
@@ -190,7 +190,7 @@ int Terminal::get_key()
         }
         else if (const auto* resized = event->getIf<sf::Event::Resized>())
         {
-            window_pixels_ = Vector2(resized->size.x, resized->size.y);
+            window_pixels_ = Vector2u(resized->size.x, resized->size.y);
             sf::Vector2f zero_zero(0, 0), screen_vec(resized->size.x, resized->size.y);
             sf::FloatRect visible_area(zero_zero, screen_vec);
             main_window_.setView(sf::View(visible_area));
@@ -258,7 +258,7 @@ int Terminal::get_key()
 }
 
 // Gets the central column and row of the screen.
-Vector2 Terminal::get_middle() const { return size() / 2; }
+Vector2u Terminal::get_middle() const { return size() / 2; }
 
 // Loads a PNG from the data files.
 sf::Image Terminal::load_png(const std::string &filename)
@@ -276,7 +276,7 @@ void Terminal::load_sprites()
 
     // Determine the size of the image.
     sf::Vector2u image_size = new_image.getSize();
-    sprite_sheet_size_ = { static_cast<int>(image_size.x), static_cast<int>(image_size.y) };
+    sprite_sheet_size_ = { image_size.x, image_size.y };
 
     // Apply a transparency mask to any black parts of the image.
     for (unsigned int x = 0; x < image_size.x; x++)
@@ -412,16 +412,16 @@ void Terminal::remove_window(Window* win)
 }
 
 // Determines the size of the screen, in character width and height, taking tiles obscured by the shader into account.
-Vector2 Terminal::size() const
+Vector2u Terminal::size() const
 {
-    Vector2 result(main_window_.getSize().x / prefs().tile_scale() / TILE_SIZE, main_window_.getSize().y / prefs().tile_scale() / TILE_SIZE);
+    Vector2u result(main_window_.getSize().x / prefs().tile_scale() / TILE_SIZE, main_window_.getSize().y / prefs().tile_scale() / TILE_SIZE);
     if (result.x < 1) result.x = 1;
     if (result.y < 1) result.y = 1;
     return result;
 }
 
 // Gets the raw size of the screen in pixels, without any adjustments.
-Vector2 Terminal::size_pixels() const { return Vector2(main_window_.getSize().x, main_window_.getSize().y); }
+Vector2u Terminal::size_pixels() const { return Vector2u(main_window_.getSize().x, main_window_.getSize().y); }
 
 // Easier access than calling core()->terminal()
 Terminal& terminal() { return core().terminal(); }

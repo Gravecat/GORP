@@ -22,15 +22,15 @@ public:
     // Don't fuck with this, it could have very, very disastrous effects. Just leave it alone forever.
     static constexpr int    TILE_SIZE = 8;  // The size of the font/tiles used in the game.
 
-            Terminal();     // Constructor, sets up default values but does not initialize the faux-terminal.
-            ~Terminal();    // Destructor, ensures memory is freed in a predictable order.
-    int     get_key();      // Gets keyboard input from the user.
-    Vector2 get_middle() const; // Gets the central column and row of the screen.
-    void    set_frame_limit(bool enable);   // Enables or disables the frame-limiting on rendering.
-    Vector2 size() const;   // Determines the size of the screen, in character width and height, taking tiles obscured by the shader into account.
-    Vector2 size_pixels() const;    // Gets the raw size of the screen in pixels, without any adjustments.
+                Terminal();     // Constructor, sets up default values but does not initialize the faux-terminal.
+                ~Terminal();    // Destructor, ensures memory is freed in a predictable order.
+    int         get_key();      // Gets keyboard input from the user.
+    Vector2u    get_middle() const; // Gets the central column and row of the screen.
+    void        set_frame_limit(bool enable);   // Enables or disables the frame-limiting on rendering.
+    Vector2u    size() const;   // Determines the size of the screen, in character width and height, taking tiles obscured by the shader into account.
+    Vector2u    size_pixels() const;    // Gets the raw size of the screen in pixels, without any adjustments.
 
-    Window* add_window(Vector2 new_size, Vector2 new_pos = {0, 0});    // Adds a new Window to the stack.
+    Window* add_window(Vector2u new_size, Vector2 new_pos = {0, 0});    // Adds a new Window to the stack.
     void    remove_window(Window* win); // Removes a Window from the stack. This is called automatically from Window's destructor.
 
 private:
@@ -49,8 +49,8 @@ private:
     sf::Shader                  shader_;        // The CRT shader.
     uint32_t                    sprite_max_;    // The maximim valid ID for a sprite on the sprite sheet.
     sf::Texture                 sprite_sheet_;  // The sprite sheet texture.
-    Vector2                     sprite_sheet_size_; // The size of the sprite sheet, in pixels.
-    Vector2                     window_pixels_; // The main window size, in pixels.
+    Vector2u                    sprite_sheet_size_; // The size of the sprite sheet, in pixels.
+    Vector2u                    window_pixels_; // The main window size, in pixels.
     std::vector<std::unique_ptr<Window> >        window_stack_;  // The current stack of Windows to render.
 
 friend class Window;
