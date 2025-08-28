@@ -67,6 +67,32 @@ IslandProcGen::IslandProcGen(uint16_t size, uint32_t seed) : canvas_id_(0), seed
         }
     }
 
+    // Remove solitary tiles stuck in the water. This means: anything surrounded entirely by deep water becomes deep water, anything surrounded entirely by
+    // shallow water becomes shallow water. Anything that's already deeper than its neighbours is ignored.
+    for (unsigned int x = 1; x < size - 1u; x++)
+    {
+        for (unsigned int y = 1; y < size - 1u; y++)
+        {
+            const uint32_t index = mathutils::array_index({x, y}, {size, size});
+            const float current_level = height_map.at(index);
+            float highest_neighbour = 0.0f;
+
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                for (int dy = -1; dy <= 1; dy++)
+                {
+                    if (dx == 0 && dy == 0) continue;
+                    const float neighbour_tile = height_map.at(mathutils::array_index(Vector2u(x + dx, y + dy), {size, size}));
+                    if (neighbour_tile > highest_neighbour) highest_neighbour = neighbour_tile;
+                }
+            }
+
+            if (current_level <= highest_neighbour) continue;
+            else if (highest_neighbour <= 0.1f) height_map.at(index) = 0.0f;
+            else if (highest_neighbour <= 0.2f) height_map.at(index) = 0.2f;
+        }
+    }
+
     // If we're generating dev maps, at this point we'll draw the final result.
     if (GENERATE_DEV_MAPS)
     {
