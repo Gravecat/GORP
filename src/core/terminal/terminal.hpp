@@ -31,7 +31,8 @@ public:
     Vector2u    size_pixels() const;    // Gets the raw size of the screen in pixels, without any adjustments.
 
     Window* add_window(Vector2u new_size, Vector2 new_pos = {0, 0});    // Adds a new Window to the stack.
-    void    remove_window(Window* win); // Removes a Window from the stack. This is called automatically from Window's destructor.
+    void    remove_window(Window* win);     // Removes a Window from the stack. This is called automatically from Window's destructor.
+    void    window_to_front(Window* win);   // Pushes a window to the top of the stack.
 
 private:
     // Internal rendering code, called by Window::print() and Window::put(), with the complex part handled by Terminal.

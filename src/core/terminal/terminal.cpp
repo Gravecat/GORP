@@ -411,6 +411,21 @@ void Terminal::remove_window(Window* win)
     core().nonfatal("Attempt to remove nonexistent window from stack.", Core::CORE_ERROR);
 }
 
+// Pushes a window to the top of the stack.
+void Terminal::window_to_front(Window* win)
+{
+    bool swapped = false;
+    for (unsigned int i = 0; i < window_stack_.size(); i++)
+    {
+        if (window_stack_.at(i).get() == win)
+        {
+            if (i < window_stack_.size() - 1) std::swap(window_stack_[i], window_stack_[i + 1]);
+            swapped = true;
+        }
+    }
+    if (!swapped) core().nonfatal("Attempt to move nonexistent window to top of stack.", Core::CORE_ERROR);
+}
+
 // Determines the size of the screen, in character width and height, taking tiles obscured by the shader into account.
 Vector2u Terminal::size() const
 {
