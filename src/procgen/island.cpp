@@ -4,6 +4,8 @@
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include <cmath>
+
 #include "3rdparty/PerlinNoise/PerlinNoise.hpp"
 #include "core/game.hpp"
 #include "procgen/island.hpp"
@@ -16,7 +18,7 @@ namespace gorp {
 // Generates a new island of the specified size.
 IslandProcGen::IslandProcGen(uint16_t size, uint32_t seed) : canvas_id_(0), seed_(seed), size_(size)
 {
-    if (!seed) seed_ = random::get<uint32_t>(UINT_MAX);
+    if (!seed) seed_ = random::get<uint32_t>(INT_MAX);
     if (size < ISLAND_SIZE_MIN || size > ISLAND_SIZE_MAX) throw GuruMeditation("Invalid island size!", size, ISLAND_SIZE_MAX);
 
     // This should only be used for testing and development, never for normal gameplay!
@@ -37,9 +39,42 @@ IslandProcGen::IslandProcGen(uint16_t size, uint32_t seed) : canvas_id_(0), seed
         {
             const float noise = perlin.octave2D_01((x * 0.10), (y * 0.10), 4);
             height_map.at(mathutils::array_index({x, y}, {size, size})) = noise;
+        }
+    }
 
-            if (GENERATE_DEV_MAPS)
+    // Adjust the height based on the distance from the centre of the map. Ideally, this can be tweaked to provide a coastline.
+    auto get_height_modifier = [this](unsigned int x, unsigned int y)
+    {
+        const float centre = (size_ - 1) / 2.0f;
+        const float dx = x - centre, dy = y - centre;
+        const float distance = std::sqrt((dx * dx) + (dy * dy));
+        const float max_distance = std::sqrt(2) * centre;
+        return (distance / max_distance) * 0.6f;
+    };
+    for (unsigned int x = 0; x < size; x++)
+    {
+        for (unsigned int y = 0; y < size; y++)
+        {
+            const uint32_t index = mathutils::array_index({x, y}, {size, size});
+
+            // The further to the edges of the map you go, the lower the land drops.
+            height_map.at(index) -= get_height_modifier(x, y);
+
+            // We're also gonna ensure the map border is oceans, and the next couple of tiles in are similarly lowered.
+            if (!x || !y || x == size - 1u || y == size - 1u) height_map.at(index) = 0.0f;
+            else if (x == 1 || y == 1 || x == size - 2u || y == size - 2u) height_map.at(index) = std::min(height_map.at(index) - 0.2f, 0.2f);
+            else if (x == 2 || y == 2 || x == size - 3u || y == size - 3u) height_map.at(index) = std::min(height_map.at(index) - 0.1f, 0.3f);
+        }
+    }
+
+    // If we're generating dev maps, at this point we'll draw the final result.
+    if (GENERATE_DEV_MAPS)
+    {
+        for (unsigned int x = 0; x < size; x++)
+        {
+            for (unsigned int y = 0; y < size; y++)
             {
+                const float noise = height_map.at(mathutils::array_index({x, y}, {size, size}));
                 Colour col = Colour::GREEN;
                 if (noise <= 0.1f) col = Colour::BLUE_DARK;
                 else if (noise <= 0.2f) col = Colour::BLUE;
