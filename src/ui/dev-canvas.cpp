@@ -15,14 +15,36 @@ namespace gorp {
 DevCanvas::DevCanvas(Vector2u size) : Element(), size_(size)
 {
     if (!size.x || !size.y) throw GuruMeditation("Invalid DevCanvas size", size.x, size.y);
+    recreate_window();
 }
 
 // Clears the canvas entirely.
-void DevCanvas::clear()
+void DevCanvas::clear(Colour col) { window_->clear(col); needs_redraw(); }
+
+// Prints a string.
+void DevCanvas::print(std::string str, Vector2 pos, Colour colour, Font font) { window_->print(str, pos, colour, font); }
+
+// Processes keyboard input from the player.
+bool DevCanvas::process_input(int key)
 {
-    window_->clear();
-    needs_redraw();
+    int move_x = 0, move_y = 0;
+    switch (key)
+    {
+        case Key::ARROW_UP: case 'w': case 'W': move_y = -1; break;
+        case Key::ARROW_DOWN: case 's': case 'S': move_y = 1; break;
+        case Key::ARROW_LEFT: case 'a': case 'A': move_x -= 1; break;
+        case Key::ARROW_RIGHT: case 'd': case 'D': move_x += 1; break;
+        default: return false;
+    }
+    window_->move(Vector2(window_->pos().x + move_x, window_->pos().y + move_y));
+    return true;
 }
+
+// Writes a character on the canvas.
+void DevCanvas::put(int ch, Vector2 pos, Colour colour, Font font) { window_->put(ch, pos, colour, font); }
+
+// As above, but using a Glyph enum.
+void DevCanvas::put(Glyph gl, Vector2 pos, Colour colour, Font font) { window_->put(gl, pos, colour, font); }
 
 // (Re)creates the render window for this canvas.
 void DevCanvas::recreate_window()
@@ -36,5 +58,8 @@ void DevCanvas::recreate_window()
     }
     else terminal().window_to_front(window_);
 }
+
+// Erases one or more tiles, or draws a coloured rectangle.
+void DevCanvas::rect(Vector2 pos, Vector2u size, Colour col) { window_->rect(pos, size, col); }
 
 }   // namespace gorp
