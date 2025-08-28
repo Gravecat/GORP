@@ -29,7 +29,7 @@ https://csdb.dk/forums/?roomid=13&topicid=97045&showallposts=1
 SFML copyright (c) 2007-2025 Laurent Gomila.
 https://www.sfml-dev.org/
 
-siv::PerlinNoise copyright (C) 2013-2021 Ryo Suzuki <reputeless@gmail.com>
+siv::PerlinNoise copyright (c) 2013-2021 Ryo Suzuki <reputeless@gmail.com>
 https://github.com/Reputeless/PerlinNoise
 
 --------------------------------------------------------------------------------
