@@ -36,13 +36,9 @@ struct Vector2
     bool        operator<(const Vector2 &other) const { return (x < other.x || y < other.y); }
     explicit    operator bool() const { return (x != 0 || y != 0); }
 
-    template<typename T> Vector2    operator+(const T other) const { return {x + other, y + other}; }
-    template<typename T> Vector2    operator-(const T other) const { return {x - other, y - other}; }
     template<typename T> Vector2    operator/(const T other) const { return {x / other, y / other}; }
     template<typename T> Vector2    operator*(const T other) const { return {x * other, y * other}; }
     template<typename T> Vector2    operator%(const T other) const { return {x % other, y % other}; }
-
-    const std::string   to_string() const { return std::to_string(x) + "," + std::to_string(y); }
 
     int32_t x, y;
 };
@@ -71,13 +67,9 @@ struct Vector2u
     bool        operator<(const Vector2u &other) const { return (x < other.x || y < other.y); }
     explicit    operator bool() const { return (x != 0 || y != 0); }
 
-    template<typename T> Vector2u   operator+(const T other) const { return {x + other, y + other}; }
-    template<typename T> Vector2u   operator-(const T other) const { return {x - other, y - other}; }
     template<typename T> Vector2u   operator/(const T other) const { return {x / other, y / other}; }
     template<typename T> Vector2u   operator*(const T other) const { return {x * other, y * other}; }
     template<typename T> Vector2u   operator%(const T other) const { return {x % other, y % other}; }
-
-    const std::string   to_string() const { return std::to_string(x) + "," + std::to_string(y); }
 
     uint32_t x, y;
 };
