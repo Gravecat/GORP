@@ -85,7 +85,7 @@ void TitleScreen::redraw()
     title_screen_window_ = term.add_window({43, title_height});
     title_screen_window_->clear();
 
-    title_screen_window_->print(phrase_, {5, 0}, Colour::GRAY_DARK, Font::TRIHOOK_HALF);
+    title_screen_window_->print(phrase_, {5, 0}, Colour::GRAY_DARK, Font::HALF);
 
     title_screen_window_->print("{r}_______  {K}_______  {g}______    {u}_______", {3, 1});
     title_screen_window_->print("{r}|       |{K}|       |{g}|    _ |  {u}|       |", {2, 2});

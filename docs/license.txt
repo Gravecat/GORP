@@ -23,9 +23,6 @@ https://github.com/ilqvya/random
 Rapid YAML copyright (c) 2018 Joao Paulo Magalhaes <dev@jpmag.me>
 https://github.com/biojppm/rapidyaml
 
-Roguelike charset font copyright (c) 2013 Trihook.
-https://csdb.dk/forums/?roomid=13&topicid=97045&showallposts=1
-
 SFML copyright (c) 2007-2025 Laurent Gomila.
 https://www.sfml-dev.org/
 

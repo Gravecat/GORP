@@ -329,8 +329,7 @@ void Terminal::put(sf::RenderTexture &tex, int ch, Vector2 pos, Colour colour, F
     switch(font)
     {
         case Font::NORMAL: break;
-        case Font::TRIHOOK: ch += 256; break;
-        case Font::TRIHOOK_HALF: ch += 768; half_font = true; break;
+        case Font::HALF: ch += 512; half_font = true; break;
     }
 
     // Check for valid sprite position.

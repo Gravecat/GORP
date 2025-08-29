@@ -15,7 +15,7 @@ enum class Colour : uint8_t { NONE, WHITE, GRAY, GRAY_DARK, BLACK, RED_LIGHT, RE
     YELLOW_DARK, GREEN_LIGHT, GREEN, GREEN_DARK, CYAN_LIGHT, CYAN, CYAN_DARK, BLUE_LIGHT, BLUE, BLUE_DARK, PURPLE_LIGHT, PURPLE, PURPLE_DARK, BROWN_LIGHT,
     BROWN, BROWN_DARK };
 
-enum class Font : uint8_t { NORMAL, TRIHOOK, TRIHOOK_HALF };
+enum class Font : uint8_t { NORMAL, HALF };
 
 // The genders of things in the game.
 enum class Gender : uint8_t { NONE, MALE, FEMALE, THEY, IT };

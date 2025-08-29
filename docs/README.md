@@ -13,8 +13,6 @@ GORP is copyright © 2025 [Raine "Gravecat" Simmons](https://github.com/Gravecat
 
 [Rapid YAML](https://github.com/biojppm/rapidyaml) copyright © 2018 Joao Paulo Magalhaes (<dev@jpmag.me>)
 
-[Roguelike charset font](https://csdb.dk/forums/?roomid=13&topicid=97045&showallposts=1) copyright © 2013 Trihook.
-
 [SFML](https://www.sfml-dev.org/) copyright © 2007-2025 Laurent Gomila.
 
 [siv::PerlinNoise](https://github.com/Reputeless/PerlinNoise) copyright © 2013-2021 Ryo Suzuki (<reputeless@gmail.com>)
