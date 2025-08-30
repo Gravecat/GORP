@@ -5,6 +5,7 @@
 // SPDX-FileCopyrightText: Copyright 2025 Raine Simmons <gc@gravecat.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "core/game.hpp"
 #include "core/terminal/terminal.hpp"
 #include "core/terminal/window.hpp"
 #include "ui/dev-canvas.hpp"
@@ -34,7 +35,8 @@ bool DevCanvas::process_input(int key)
         case Key::ARROW_DOWN: case 's': case 'S': move_y = 1; break;
         case Key::ARROW_LEFT: case 'a': case 'A': move_x -= 1; break;
         case Key::ARROW_RIGHT: case 'd': case 'D': move_x += 1; break;
-        case Key::ESCAPE: terminal().remove_window(window_); break;
+        case Key::ESCAPE: game().delete_element(id()); return true;
+        case Key::TAB: game().element_to_back(id(), 2); return true;
         default: return false;
     }
     window_->move(Vector2(window_->pos().x + move_x, window_->pos().y + move_y));

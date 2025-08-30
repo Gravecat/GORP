@@ -63,8 +63,6 @@ void Game::begin()
 void Game::clear_elements()
 {
     ui_input_ = ui_msglog_ = 0;
-    for (unsigned int i = 0; i < ui_elements_.size(); i++)
-        ui_elements_.at(i)->destroy_window();
     ui_elements_.clear();
 }
 
@@ -99,6 +97,46 @@ Element& Game::element(uint32_t id) const
         if (element->id() == id) return *element;
     }
     throw std::runtime_error("Invalid UI element requested!");
+}
+
+// Moves a UI element to the back of the screen, optionally ignoring a number of others.
+void Game::element_to_back(uint32_t id, unsigned int ignore)
+{
+    if (!ui_elements_.size()) throw std::runtime_error("element_to_back called on empty element stack!");
+
+    bool swapped = false;
+    Window *win = nullptr;
+    for (unsigned int i = ui_elements_.size() - 1; i >= ignore + 1; i--)
+    {
+        if (ui_elements_.at(i).get()->id() == id)
+        {
+            win = ui_elements_.at(i).get()->window_ptr();
+            if (i > 0) std::swap(ui_elements_[i], ui_elements_[i - 1]);
+            swapped = true;
+        }
+    }
+    if (!swapped && ui_elements_.at(0).get()->id() != id) throw std::runtime_error("Attempt to move nonexistent element to bottom of stack.");
+    if (win) terminal().window_to_back(win, ignore);
+}
+
+// Moves a UI element to the front of the screen.
+void Game::element_to_front(uint32_t id)
+{
+    if (!ui_elements_.size()) throw std::runtime_error("element_to_front called on empty element stack!");
+
+    bool swapped = false;
+    Window *win = nullptr;
+    for (unsigned int i = 0; i < ui_elements_.size(); i++)
+    {
+        if (ui_elements_.at(i).get()->id() == id)
+        {
+            win = ui_elements_.at(i).get()->window_ptr();
+            if (i < ui_elements_.size() - 1) std::swap(ui_elements_[i], ui_elements_[i + 1]);
+            swapped = true;
+        }
+    }
+    if (!swapped) throw std::runtime_error("Attempt to move nonexistent element to top of stack.");
+    if (win) terminal().window_to_front(win);
 }
 
 // Shuts things down cleanly and exits the game.

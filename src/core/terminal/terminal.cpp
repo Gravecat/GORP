@@ -410,9 +410,28 @@ void Terminal::remove_window(Window* win)
     core().nonfatal("Attempt to remove nonexistent window from stack.", Core::CORE_ERROR);
 }
 
-// Pushes a window to the top of the stack.
+// These functions shold ONLY be called via Game::element_to_front() and Game::element_to_back() otherwise things could break horribly!
+void Terminal::window_to_back(Window *win, unsigned int ignore)
+{
+    if (!window_stack_.size()) throw std::runtime_error("window_to_back called on empty window stack!");
+
+    bool swapped = false;
+    for (unsigned int i = window_stack_.size() - 1; i >= ignore + 1; i--)
+    {
+        if (window_stack_.at(i).get() == win)
+        {
+            if (i > 0) std::swap(window_stack_[i], window_stack_[i - 1]);
+            swapped = true;
+        }
+    }
+    if (!swapped && window_stack_.at(0).get() != win) throw std::runtime_error("Attempt to move nonexistent window to bottom of stack.");
+}
+
+// These functions shold ONLY be called via Game::element_to_front() and Game::element_to_back() otherwise things could break horribly!
 void Terminal::window_to_front(Window* win)
 {
+    if (!window_stack_.size()) throw std::runtime_error("window_to_front called on empty window stack!");
+
     bool swapped = false;
     for (unsigned int i = 0; i < window_stack_.size(); i++)
     {
@@ -422,7 +441,7 @@ void Terminal::window_to_front(Window* win)
             swapped = true;
         }
     }
-    if (!swapped) core().nonfatal("Attempt to move nonexistent window to top of stack.", Core::CORE_ERROR);
+    if (!swapped) throw std::runtime_error("Attempt to move nonexistent window to top of stack.");
 }
 
 // Determines the size of the screen, in character width and height, taking tiles obscured by the shader into account.

@@ -32,7 +32,10 @@ public:
 
     Window* add_window(Vector2u new_size, Vector2 new_pos = {0, 0});    // Adds a new Window to the stack.
     void    remove_window(Window* win);     // Removes a Window from the stack. This is called automatically from Window's destructor.
-    void    window_to_front(Window* win);   // Pushes a window to the top of the stack.
+
+    // These functions shold ONLY be called via Game::element_to_front() and Game::element_to_back() otherwise things could break horribly!
+    void    window_to_back(Window *win, unsigned int ignore);
+    void    window_to_front(Window* win);
 
 private:
     // Internal rendering code, called by Window::print() and Window::put(), with the complex part handled by Terminal.

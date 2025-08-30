@@ -23,6 +23,8 @@ public:
     Codex&      codex() const;      // Returns a reference to the Codex object.
     void        delete_element(uint32_t id);    // Deletes a specified UI element.
     Element&    element(uint32_t id) const;     // Retrieves a specified UI element.
+    void        element_to_back(uint32_t id, unsigned int ignore = 0);  // Moves a UI element to the back of the screen, optionally ignoring a number of others.
+    void        element_to_front(uint32_t id);  // Moves a UI element to the front of the screen.
     void        leave_game();       // Shuts things down cleanly and exits the game.
     MessageLog& log() const;        // Returns a reference to the MessageLog object.
     void        process_input(const std::string &input);    // Processes input from the player.
