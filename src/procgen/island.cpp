@@ -117,7 +117,8 @@ void IslandProcGen::floodfill_sub_islands(Vector2u start, unsigned int id, DevCa
     {
         for (int y = -1; y <= 1; y++)
         {
-            if (x == 0 && y == 0) continue;
+            if (x == 0 && y == 0) continue; // Ignore current tile.
+            if (x && y) continue;   // Ignore diagonals.
             if (static_cast<int>(start.x) + x < 0 || start.x + x >= size_) continue;
             if (static_cast<int>(start.y) + y < 0 || start.y + y >= size_) continue;
             floodfill_sub_islands(Vector2u(start.x + x, start.y + y), id, canvas_ptr);
