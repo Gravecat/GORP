@@ -34,6 +34,7 @@ bool DevCanvas::process_input(int key)
         case Key::ARROW_DOWN: case 's': case 'S': move_y = 1; break;
         case Key::ARROW_LEFT: case 'a': case 'A': move_x -= 1; break;
         case Key::ARROW_RIGHT: case 'd': case 'D': move_x += 1; break;
+        case Key::ESCAPE: terminal().remove_window(window_); break;
         default: return false;
     }
     window_->move(Vector2(window_->pos().x + move_x, window_->pos().y + move_y));
