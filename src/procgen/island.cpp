@@ -55,6 +55,38 @@ void IslandProcGen::determine_sub_islands()
             else if (sub_island_id_.at(index) == SUB_ISLAND_ID_UNDEFINED) floodfill_sub_islands({x, y}, current_sub_id++, canvas_ptr);
         }
     }
+
+    // Remove any islands deemed too small.
+    for (unsigned int i = 0; i < sub_island_coords_.size(); i++)
+    {
+        if (sub_island_coords_.at(i).size() < SUB_ISLAND_MIN_SIZE)
+        {
+            erase_sub_island(i, canvas_ptr);
+            i--;
+        }
+    }
+}
+
+// Erases a specified sub-island, reassigning other IDs.
+void IslandProcGen::erase_sub_island(unsigned int id, DevCanvas* canvas_ptr)
+{
+    std::vector<Vector2u> &coords = sub_island_coords_.at(id);
+
+    // Mark all of the coordinates of the sub-island as too small, and update the dev map if needed.
+    for (auto coord : coords)
+    {
+        const uint32_t index = mathutils::array_index(coord, {size_, size_});
+        sub_island_id_.at(index) = SUB_ISLAND_ID_TOO_SMALL;
+        if (GENERATE_DEV_MAPS && canvas_ptr)
+            canvas_ptr->put(Glyph::FULL_BLOCK, Vector2(coord.x, coord.y), Colour::GRAY_DARK);
+    }
+
+    // Erase the sub-island's coordinates from the vector.
+    sub_island_coords_.erase(sub_island_coords_.begin() + id);
+
+    // Reassign all other island IDs.
+    for (unsigned int i = 0; i < size_ * size_; i++)
+        if (sub_island_id_.at(i) > static_cast<int>(id)) sub_island_id_.at(i)--;
 }
 
 // Flood-fills an area starting at the coordinates, with the specified ID.
@@ -79,7 +111,7 @@ void IslandProcGen::floodfill_sub_islands(Vector2u start, unsigned int id, DevCa
     // If we're generating dev maps, now's a good time to draw the islands.
     if (GENERATE_DEV_MAPS && canvas_ptr)
     {
-        Colour colour = Colour::GRAY_DARK;
+        Colour colour = Colour::WHITE;
         switch(id)
         {
             case 0: colour = Colour::RED; break;
@@ -107,7 +139,6 @@ void IslandProcGen::floodfill_sub_islands(Vector2u start, unsigned int id, DevCa
             case 22: colour = Colour::PURPLE_DARK; break;
             case 23: colour = Colour::BROWN_DARK; break;
             case 24: colour = Colour::GRAY; break;
-            case 25: colour = Colour::WHITE; break;
         }
         canvas_ptr->put(Glyph::FULL_BLOCK, Vector2(start.x, start.y), colour);
     }

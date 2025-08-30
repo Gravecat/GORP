@@ -19,6 +19,7 @@ public:
 
 private:
     void    determine_sub_islands();        // Determines which land-masses are contiguous, and defines these as sub-islands.
+    void    erase_sub_island(unsigned int id, DevCanvas* canvas_ptr);   // Erases a specified sub-island, reassigning other IDs.
     void    floodfill_sub_islands(Vector2u start, unsigned int id, DevCanvas* canvas_ptr);  // Flood-fills an area starting at the coords with the specified ID.
     void    generate_heightmap();           // Generates the heightmap of the island, based on Perlin noise followed by some other tweaks.
 
@@ -43,6 +44,9 @@ private:
 
     static constexpr int        SUB_ISLAND_ID_UNDEFINED =   -1;     // Sub-island ID has not yet been set.
     static constexpr int        SUB_ISLAND_ID_WATER =       -2;     // This tile is water, and cannot belong to a sub-island.
+    static constexpr int        SUB_ISLAND_ID_TOO_SMALL =   -3;     // The ID for tiles that were part of a sub-island considered too small to count.
+
+    static constexpr int        SUB_ISLAND_MIN_SIZE =       30;     // The minimum size for a sub-island to count.
 
     std::vector<float>  height_map_;    // The height map of the island, which determines the terrain.
     uint32_t    seed_;          // The PRNG seed, used to (hopefully) generate identical islands with the same seed.
